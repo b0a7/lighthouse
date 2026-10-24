@@ -4883,12 +4883,21 @@ impl ApiTester {
         for epoch in 0..=self.chain.epoch().unwrap().as_u64() + 1 {
             let epoch = Epoch::from(epoch);
 
+            // v1 dependent root (legacy: end of epoch N-1).
             let dependent_root = self
                 .chain
                 .block_root_at_slot(
                     epoch.start_slot(E::slots_per_epoch()) - 1,
                     WhenSlotSkipped::Prev,
                 )
+                .unwrap()
+                .unwrap_or(self.chain.head_beacon_block_root());
+
+            // Cache key uses the fork-aware decision root (post-Fulu: end of epoch N-2).
+            let decision_slot = self.chain.spec.proposer_shuffling_decision_slot::<E>(epoch);
+            let decision_root = self
+                .chain
+                .block_root_at_slot(decision_slot, WhenSlotSkipped::Prev)
                 .unwrap()
                 .unwrap_or(self.chain.head_beacon_block_root());
 
@@ -4901,7 +4910,7 @@ impl ApiTester {
                     self.chain
                         .beacon_proposer_cache
                         .lock()
-                        .get_epoch::<E>(dependent_root, epoch)
+                        .get_epoch::<E>(decision_root, epoch)
                         .is_none(),
                     "the proposer cache should miss initially for the next epoch"
                 );
@@ -4913,26 +4922,35 @@ impl ApiTester {
                 .await
                 .unwrap();
 
-            // A current-epoch request should leave the cache primed (block import already did so,
-            // but this is still a useful end-to-end check). A request for `current_epoch + 1`
-            // should not prime the cache.
+            // Current-epoch requests leave the cache primed. Post-Fulu, next-epoch requests also
+            // prime the cache (duties are fully determined by the decision root). Pre-Fulu,
+            // next-epoch duties remain uncached because they still depend on the undecided end
+            // of the current epoch.
             if epoch == current_epoch {
                 assert!(
                     self.chain
                         .beacon_proposer_cache
                         .lock()
-                        .get_epoch::<E>(dependent_root, epoch)
+                        .get_epoch::<E>(decision_root, epoch)
                         .is_some(),
                     "the proposer cache should be primed for the current epoch"
                 );
             } else if epoch == current_epoch + 1 {
-                assert!(
-                    self.chain
-                        .beacon_proposer_cache
-                        .lock()
-                        .get_epoch::<E>(dependent_root, epoch)
-                        .is_none(),
-                    "a request for the next epoch should not prime the proposer cache"
+                let next_epoch_should_cache = self
+                    .chain
+                    .spec
+                    .fork_name_at_epoch(epoch.saturating_sub(1_u64))
+                    .fulu_enabled();
+                let cached = self
+                    .chain
+                    .beacon_proposer_cache
+                    .lock()
+                    .get_epoch::<E>(decision_root, epoch)
+                    .is_some();
+                assert_eq!(
+                    cached, next_epoch_should_cache,
+                    "next-epoch cache priming should match post-Fulu determinism \
+                     (cached={cached}, expect_cache={next_epoch_should_cache})"
                 );
             }
 
