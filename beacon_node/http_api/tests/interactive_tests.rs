@@ -13,6 +13,7 @@ use eth2::types::DepositContractData;
 use eth2::types::ProduceBlockV3Response;
 use execution_layer::{ForkchoiceState, PayloadAttributes};
 use fixed_bytes::FixedBytesExtended;
+use futures::future::join_all;
 use http_api::test_utils::InteractiveTester;
 use parking_lot::Mutex;
 use slot_clock::SlotClock;
@@ -23,9 +24,23 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Duration;
 use types::{
-    Address, EthSpec, ExecPayload, ExecutionBlockHash, ForkName, Hash256, ProposerPreparationData,
-    Slot, Spec,
+    Address, Epoch, EthSpec, ExecPayload, ExecutionBlockHash, ForkName, Hash256,
+    ProposerPreparationData, Slot, Spec,
 };
+
+/// Sample count for the global `beacon_state_processing_process_epoch` histogram.
+fn process_epoch_sample_count() -> u64 {
+    metrics::gather()
+        .iter()
+        .find(|mf| mf.get_name() == "beacon_state_processing_process_epoch")
+        .map(|mf| {
+            mf.get_metric()
+                .iter()
+                .map(|m| m.get_histogram().get_sample_count())
+                .sum()
+        })
+        .unwrap_or(0)
+}
 
 type E = Spec;
 
@@ -1303,4 +1318,197 @@ async fn lighthouse_custody_info() {
         info.custody_columns.len(),
         info.custody_group_count as usize
     );
+}
+
+/// Regression test for expensive `attestation_data` recomputation on a stale head.
+///
+/// With a head many epochs behind the wall clock (e.g. during a prolonged outage), each
+/// `attestation_data` request whose epoch differs from the head advances a state through every
+/// empty epoch up to the request. Without caching / single-flight dedup, concurrent VC / Charon
+/// retries redo that work every call. See https://github.com/sigp/lighthouse/issues/9530 and
+/// https://github.com/sigp/lighthouse/issues/9538.
+#[tokio::test(flavor = "multi_thread")]
+async fn attestation_data_cached_with_stale_head() {
+    let spec = test_spec::<E>();
+
+    // Use 64 validators so Gloas genesis (balance-weighted proposer selection) succeeds.
+    let validator_count = 64;
+    let slots_per_epoch = E::slots_per_epoch();
+    let stale_epochs = 12_u64;
+
+    let tester = InteractiveTester::<E>::new(Some(spec.clone()), validator_count).await;
+    let harness = &tester.harness;
+    let client = &tester.client;
+    let mock_el = harness.mock_execution_layer.as_ref().unwrap();
+    mock_el.server.all_payloads_valid();
+
+    // Build ~3 epochs so the head is non-trivial, then jump the clock far past the head with
+    // no new blocks (stale head, wall-clock still advancing).
+    let num_slots = 3 * slots_per_epoch;
+    harness.advance_slot();
+    harness
+        .extend_chain_with_sync(
+            num_slots as usize,
+            BlockStrategy::OnCanonicalHead,
+            AttestationStrategy::AllValidators,
+            SyncCommitteeStrategy::NoValidators,
+            LightClientStrategy::Disabled,
+        )
+        .await;
+
+    let head_slot = harness.head_slot();
+    let head_epoch = head_slot.epoch(slots_per_epoch);
+    assert_eq!(head_epoch, Epoch::new(3));
+
+    let future_slot = head_slot + Slot::new(stale_epochs * slots_per_epoch);
+    harness.set_current_slot(future_slot);
+
+    let current_epoch = harness.chain.epoch().unwrap();
+    assert_eq!(current_epoch, head_epoch + stale_epochs);
+    assert_eq!(harness.chain.slot().unwrap(), future_slot);
+
+    let head = harness.chain.canonical_head.cached_head();
+    let head_block_root = head.head_block_root();
+
+    // (a) First call must advance through the empty epochs (process_epoch samples > 0).
+    let before_first = process_epoch_sample_count();
+    let first = client
+        .get_validator_attestation_data(future_slot, 0)
+        .await
+        .unwrap()
+        .data;
+    let after_first = process_epoch_sample_count();
+    let first_delta = after_first.saturating_sub(before_first);
+
+    assert!(
+        first_delta > 0,
+        "first attestation_data call with a stale head should process epochs, got delta {first_delta}"
+    );
+    assert_eq!(first.slot, future_slot);
+    assert_eq!(first.beacon_block_root, head_block_root);
+    assert_eq!(first.target.epoch, current_epoch);
+
+    // (b) A second identical call should not redo epoch processing.
+    let before_second = process_epoch_sample_count();
+    let second = client
+        .get_validator_attestation_data(future_slot, 0)
+        .await
+        .unwrap()
+        .data;
+    let after_second = process_epoch_sample_count();
+    let second_delta = after_second.saturating_sub(before_second);
+    assert_eq!(
+        second_delta, 0,
+        "cached attestation_data must not re-run process_epoch (delta={second_delta})"
+    );
+    assert_eq!(second, first);
+
+    // Concurrent callers after the first should add ~0 work (cache already warm).
+    const CONCURRENT: usize = 4;
+    let before_concurrent = process_epoch_sample_count();
+    let concurrent_results = join_all((0..CONCURRENT).map(|_| {
+        let client = client.clone();
+        async move {
+            client
+                .get_validator_attestation_data(future_slot, 0)
+                .await
+                .unwrap()
+                .data
+        }
+    }))
+    .await;
+    let after_concurrent = process_epoch_sample_count();
+    let concurrent_delta = after_concurrent.saturating_sub(before_concurrent);
+    assert_eq!(
+        concurrent_delta, 0,
+        "warm concurrent attestation_data calls must not re-run process_epoch \
+         (concurrent_delta={concurrent_delta})"
+    );
+    for result in &concurrent_results {
+        assert_eq!(result, &first);
+    }
+
+    // Cold concurrent calls for a new request epoch must single-flight. A new epoch is a new
+    // cache key, so the advance still starts from the stale head (~stale_epochs+1 process_epoch
+    // samples) — but only once, not N times.
+    let cold_slot = future_slot + Slot::new(slots_per_epoch);
+    harness.set_current_slot(cold_slot);
+    let cold_epoch = harness.chain.epoch().unwrap();
+    assert_eq!(cold_epoch, current_epoch + 1);
+
+    let before_cold = process_epoch_sample_count();
+    let cold_results = join_all((0..CONCURRENT).map(|_| {
+        let client = client.clone();
+        async move {
+            client
+                .get_validator_attestation_data(cold_slot, 0)
+                .await
+                .unwrap()
+                .data
+        }
+    }))
+    .await;
+    let after_cold = process_epoch_sample_count();
+    let cold_delta = after_cold.saturating_sub(before_cold);
+    assert!(
+        cold_delta > 0,
+        "cold concurrent attestation_data for a new epoch should process epochs from the stale head"
+    );
+    assert!(
+        cold_delta < first_delta.saturating_mul(2),
+        "cold concurrent single-flight should cost about one stale-head advance, not N times \
+         (cold_delta={cold_delta}, first_delta={first_delta}, n={CONCURRENT})"
+    );
+    assert!(
+        cold_delta
+            < first_delta
+                .saturating_mul(CONCURRENT as u64)
+                .saturating_div(2),
+        "cold concurrent calls must cost about one compute, not N times \
+         (cold_delta={cold_delta}, first_delta={first_delta}, n={CONCURRENT})"
+    );
+    let cold_first = &cold_results[0];
+    for result in &cold_results {
+        assert_eq!(result, cold_first);
+    }
+    assert_eq!(cold_first.slot, cold_slot);
+    assert_eq!(cold_first.beacon_block_root, head_block_root);
+    assert_eq!(cold_first.target.epoch, cold_epoch);
+
+    // (c) Returned source / target / beacon_block_root match a direct produce call (same path
+    // semantics; values must stay identical once caching is introduced).
+    let produced = harness
+        .chain
+        .produce_unaggregated_attestation(future_slot, 0)
+        .unwrap();
+    let produced_data = produced.data();
+    assert_eq!(produced_data.source, first.source);
+    assert_eq!(produced_data.target, first.target);
+    assert_eq!(produced_data.beacon_block_root, first.beacon_block_root);
+
+    // (d) After a new block is imported at the wall-clock slot, attestation_data must reflect
+    // the new head (no stale cached beacon_block_root / checkpoints).
+    let state = harness.get_current_state();
+    let validators: Vec<usize> = (0..validator_count).collect();
+    harness
+        .add_attested_block_at_slot(cold_slot, state, &validators)
+        .await
+        .unwrap();
+
+    let new_head = harness.chain.canonical_head.cached_head();
+    let new_head_block_root = new_head.head_block_root();
+    assert_ne!(new_head_block_root, head_block_root);
+
+    let after_block = client
+        .get_validator_attestation_data(cold_slot, 0)
+        .await
+        .unwrap()
+        .data;
+    assert_eq!(after_block.beacon_block_root, new_head_block_root);
+    assert_ne!(after_block.beacon_block_root, first.beacon_block_root);
+    let fresh_after = harness
+        .chain
+        .produce_unaggregated_attestation(cold_slot, 0)
+        .unwrap();
+    assert_eq!(after_block, *fresh_after.data());
 }
