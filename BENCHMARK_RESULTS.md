@@ -631,3 +631,416 @@ Frozen public tip left untouched: `cursor/stale-head-benchmark` @ `4504e7bdf572f
 - `attester_duties` **repeats** are cheap on base (shuffling cache); first call per new epoch is still O(N).
 - `states/{slot}/validators` past the head stays ~flat (~80–150 ms) and does not process empty epochs — confirms it is already cheap / excluded from the fix.
 - Epoch-by-epoch walk: without an advanced-head-state cache, each new epoch's first call still replays from the head, so cost grows with N (e.g. Fulu proposer ~48 ms at N=1 → ~1326 ms at N=32; Gloas ~336 ms → ~10800 ms).
+
+---
+
+## Variant 6 — advanced-state fix (`cursor/stale-head-benchmark-advanced-state`)
+
+Merge of `cursor/stale-head-benchmark-v2` + `cursor/stale-head-advanced-state`.
+Run SHA: see `cursor/stale-head-benchmark-advanced-state` tip at time of measurement.
+
+### stale-head benchmark variant=`advanced-state` validators=32768
+| fork | endpoint | stale_epochs | first_ms | repeat_mean_ms (n=5) | repeat_total_ms | concurrent_wall_ms (n=8) | concurrent_cpu_ms |
+|---|---|---:|---:|---:|---:|---:|---:|
+| fulu | proposer_duties(next_epoch) | 1 | 43.07 | 0.77 | 3.87 | 5.14 | 7.23 |
+| fulu | attestation_data(current_slot) | 1 | 1.60 | 0.49 | 2.43 | 0.81 | 2.15 |
+| fulu | attester_duties(current_epoch) | 1 | 104.08 | 91.55 | 457.75 | 339.14 | 652.16 |
+| fulu | block_production(v3) | 1 | 326.14 | 263.84 | 1319.20 | 1045.33 | 88.69 |
+| fulu | states/{slot}/validators(past_head) | 1 | 87.89 | 86.07 | 430.37 | 405.61 | 719.35 |
+| fulu | proposer_duties(next_epoch) | 2 | 53.35 | 1.05 | 5.24 | 1.10 | 2.95 |
+| fulu | attestation_data(current_slot) | 2 | 0.40 | 0.44 | 2.20 | 0.77 | 2.11 |
+| fulu | attester_duties(current_epoch) | 2 | 73.35 | 72.14 | 360.69 | 292.59 | 586.97 |
+| fulu | block_production(v3) | 2 | 333.24 | 263.56 | 1317.79 | 1044.22 | 87.33 |
+| fulu | states/{slot}/validators(past_head) | 2 | 90.59 | 76.69 | 383.47 | 430.09 | 718.37 |
+| fulu | proposer_duties(next_epoch) | 4 | 84.19 | 0.80 | 4.00 | 1.13 | 3.03 |
+| fulu | attestation_data(current_slot) | 4 | 0.43 | 0.30 | 1.49 | 0.69 | 1.87 |
+| fulu | attester_duties(current_epoch) | 4 | 74.15 | 73.50 | 367.48 | 300.57 | 599.03 |
+| fulu | block_production(v3) | 4 | 382.06 | 263.92 | 1319.61 | 1044.07 | 86.77 |
+| fulu | states/{slot}/validators(past_head) | 4 | 86.16 | 81.32 | 406.58 | 419.24 | 708.65 |
+| fulu | proposer_duties(next_epoch) | 8 | 183.85 | 1.13 | 5.66 | 2.61 | 5.00 |
+| fulu | attestation_data(current_slot) | 8 | 0.54 | 0.45 | 2.23 | 1.20 | 3.49 |
+| fulu | attester_duties(current_epoch) | 8 | 76.16 | 76.43 | 382.15 | 314.01 | 630.24 |
+| fulu | block_production(v3) | 8 | 547.48 | 265.90 | 1329.52 | 1056.20 | 112.89 |
+| fulu | states/{slot}/validators(past_head) | 8 | 98.71 | 85.28 | 426.38 | 434.40 | 756.22 |
+| fulu | proposer_duties(next_epoch) | 16 | 342.25 | 1.45 | 7.23 | 1.84 | 4.62 |
+| fulu | attestation_data(current_slot) | 16 | 0.60 | 0.47 | 2.37 | 1.30 | 3.36 |
+| fulu | attester_duties(current_epoch) | 16 | 73.74 | 81.72 | 408.62 | 332.36 | 666.65 |
+| fulu | block_production(v3) | 16 | 751.95 | 269.29 | 1346.43 | 1062.80 | 133.95 |
+| fulu | states/{slot}/validators(past_head) | 16 | 86.40 | 93.16 | 465.81 | 399.76 | 668.03 |
+| fulu | proposer_duties(next_epoch) | 32 | 651.73 | 0.86 | 4.30 | 0.92 | 2.65 |
+| fulu | attestation_data(current_slot) | 32 | 0.35 | 0.37 | 1.85 | 0.79 | 2.09 |
+| fulu | attester_duties(current_epoch) | 32 | 77.54 | 72.83 | 364.17 | 298.05 | 593.72 |
+| fulu | block_production(v3) | 32 | 1194.41 | 269.40 | 1347.02 | 1060.40 | 123.59 |
+| fulu | states/{slot}/validators(past_head) | 32 | 81.49 | 75.92 | 379.62 | 389.75 | 656.39 |
+| gloas | proposer_duties(next_epoch) | 1 | 308.49 | 0.77 | 3.83 | 3.55 | 6.63 |
+| gloas | attestation_data(current_slot) | 1 | 0.68 | 0.44 | 2.18 | 0.89 | 2.33 |
+| gloas | attester_duties(current_epoch) | 1 | 89.07 | 78.18 | 390.92 | 330.78 | 634.63 |
+| gloas | block_production(v4) | 1 | 604.84 | 264.36 | 1321.82 | 1048.04 | 92.05 |
+| gloas | states/{slot}/validators(past_head) | 1 | 81.94 | 77.68 | 388.42 | 393.58 | 691.30 |
+| gloas | proposer_duties(next_epoch) | 2 | 318.99 | 0.83 | 4.15 | 1.49 | 3.48 |
+| gloas | attestation_data(current_slot) | 2 | 0.68 | 0.30 | 1.51 | 0.72 | 2.01 |
+| gloas | attester_duties(current_epoch) | 2 | 76.33 | 74.30 | 371.48 | 294.84 | 583.70 |
+| gloas | block_production(v4) | 2 | 603.68 | 264.72 | 1323.61 | 1047.90 | 90.90 |
+| gloas | states/{slot}/validators(past_head) | 2 | 83.00 | 76.23 | 381.14 | 413.02 | 721.25 |
+| gloas | proposer_duties(next_epoch) | 4 | 710.20 | 0.96 | 4.80 | 1.56 | 2.86 |
+| gloas | attestation_data(current_slot) | 4 | 0.69 | 0.42 | 2.10 | 0.80 | 2.31 |
+| gloas | attester_duties(current_epoch) | 4 | 75.09 | 73.32 | 366.58 | 298.36 | 595.60 |
+| gloas | block_production(v4) | 4 | 957.45 | 265.29 | 1326.45 | 1047.49 | 93.99 |
+| gloas | states/{slot}/validators(past_head) | 4 | 123.00 | 81.38 | 406.90 | 413.21 | 690.12 |
+| gloas | proposer_duties(next_epoch) | 8 | 1278.58 | 0.94 | 4.72 | 1.32 | 3.28 |
+| gloas | attestation_data(current_slot) | 8 | 0.49 | 0.43 | 2.17 | 0.99 | 2.47 |
+| gloas | attester_duties(current_epoch) | 8 | 74.76 | 75.78 | 378.90 | 308.42 | 617.69 |
+| gloas | block_production(v4) | 8 | 1615.74 | 264.85 | 1324.23 | 1048.23 | 89.45 |
+| gloas | states/{slot}/validators(past_head) | 8 | 89.28 | 81.89 | 409.47 | 401.81 | 683.41 |
+| gloas | proposer_duties(next_epoch) | 16 | 2574.79 | 1.15 | 5.73 | 1.94 | 3.63 |
+| gloas | attestation_data(current_slot) | 16 | 0.88 | 0.33 | 1.65 | 0.85 | 2.34 |
+| gloas | attester_duties(current_epoch) | 16 | 78.29 | 73.55 | 367.74 | 308.22 | 610.66 |
+| gloas | block_production(v4) | 16 | 3008.40 | 267.39 | 1336.93 | 1059.20 | 107.24 |
+| gloas | states/{slot}/validators(past_head) | 16 | 85.86 | 78.87 | 394.37 | 385.20 | 648.30 |
+| gloas | proposer_duties(next_epoch) | 32 | 5139.52 | 1.41 | 7.04 | 1.88 | 3.98 |
+| gloas | attestation_data(current_slot) | 32 | 0.61 | 0.37 | 1.85 | 2.01 | 4.25 |
+| gloas | attester_duties(current_epoch) | 32 | 90.86 | 84.03 | 420.16 | 330.68 | 674.73 |
+| gloas | block_production(v4) | 32 | 5863.88 | 269.29 | 1346.45 | 1083.48 | 163.20 |
+| gloas | states/{slot}/validators(past_head) | 32 | 108.31 | 91.03 | 455.13 | 411.00 | 688.42 |
+
+### stale-head epoch-by-epoch incremental variant=`advanced-state` validators=32768
+| fork | endpoint | stale_epochs | first_ms |
+|---|---|---:|---:|
+| fulu | proposer_duties(next_epoch) | 1 | 41.37 |
+| fulu | attestation_data(current_slot) | 1 | 1.51 |
+| fulu | attester_duties(current_epoch) | 1 | 96.18 |
+| fulu | block_production(v3) | 1 | 322.71 |
+| fulu | states/{slot}/validators(past_head) | 1 | 130.23 |
+| fulu | proposer_duties(next_epoch) | 2 | 54.31 |
+| fulu | attestation_data(current_slot) | 2 | 0.92 |
+| fulu | attester_duties(current_epoch) | 2 | 86.26 |
+| fulu | block_production(v3) | 2 | 331.67 |
+| fulu | states/{slot}/validators(past_head) | 2 | 95.83 |
+| fulu | proposer_duties(next_epoch) | 3 | 43.43 |
+| fulu | attestation_data(current_slot) | 3 | 0.76 |
+| fulu | attester_duties(current_epoch) | 3 | 76.53 |
+| fulu | block_production(v3) | 3 | 329.78 |
+| fulu | states/{slot}/validators(past_head) | 3 | 85.90 |
+| fulu | proposer_duties(next_epoch) | 4 | 38.51 |
+| fulu | attestation_data(current_slot) | 4 | 1.20 |
+| fulu | attester_duties(current_epoch) | 4 | 75.16 |
+| fulu | block_production(v3) | 4 | 328.20 |
+| fulu | states/{slot}/validators(past_head) | 4 | 79.88 |
+| fulu | proposer_duties(next_epoch) | 5 | 37.31 |
+| fulu | attestation_data(current_slot) | 5 | 0.97 |
+| fulu | attester_duties(current_epoch) | 5 | 73.48 |
+| fulu | block_production(v3) | 5 | 322.26 |
+| fulu | states/{slot}/validators(past_head) | 5 | 81.01 |
+| fulu | proposer_duties(next_epoch) | 6 | 45.99 |
+| fulu | attestation_data(current_slot) | 6 | 0.82 |
+| fulu | attester_duties(current_epoch) | 6 | 74.12 |
+| fulu | block_production(v3) | 6 | 333.68 |
+| fulu | states/{slot}/validators(past_head) | 6 | 76.97 |
+| fulu | proposer_duties(next_epoch) | 7 | 49.62 |
+| fulu | attestation_data(current_slot) | 7 | 1.51 |
+| fulu | attester_duties(current_epoch) | 7 | 75.04 |
+| fulu | block_production(v3) | 7 | 335.52 |
+| fulu | states/{slot}/validators(past_head) | 7 | 76.13 |
+| fulu | proposer_duties(next_epoch) | 8 | 35.43 |
+| fulu | attestation_data(current_slot) | 8 | 1.20 |
+| fulu | attester_duties(current_epoch) | 8 | 83.04 |
+| fulu | block_production(v3) | 8 | 322.01 |
+| fulu | states/{slot}/validators(past_head) | 8 | 74.67 |
+| fulu | proposer_duties(next_epoch) | 9 | 39.14 |
+| fulu | attestation_data(current_slot) | 9 | 1.10 |
+| fulu | attester_duties(current_epoch) | 9 | 70.41 |
+| fulu | block_production(v3) | 9 | 320.81 |
+| fulu | states/{slot}/validators(past_head) | 9 | 76.93 |
+| fulu | proposer_duties(next_epoch) | 10 | 41.84 |
+| fulu | attestation_data(current_slot) | 10 | 1.26 |
+| fulu | attester_duties(current_epoch) | 10 | 73.89 |
+| fulu | block_production(v3) | 10 | 321.01 |
+| fulu | states/{slot}/validators(past_head) | 10 | 75.65 |
+| fulu | proposer_duties(next_epoch) | 11 | 45.82 |
+| fulu | attestation_data(current_slot) | 11 | 1.35 |
+| fulu | attester_duties(current_epoch) | 11 | 73.14 |
+| fulu | block_production(v3) | 11 | 322.33 |
+| fulu | states/{slot}/validators(past_head) | 11 | 75.21 |
+| fulu | proposer_duties(next_epoch) | 12 | 44.09 |
+| fulu | attestation_data(current_slot) | 12 | 0.85 |
+| fulu | attester_duties(current_epoch) | 12 | 75.58 |
+| fulu | block_production(v3) | 12 | 324.87 |
+| fulu | states/{slot}/validators(past_head) | 12 | 80.55 |
+| fulu | proposer_duties(next_epoch) | 13 | 42.14 |
+| fulu | attestation_data(current_slot) | 13 | 0.80 |
+| fulu | attester_duties(current_epoch) | 13 | 74.43 |
+| fulu | block_production(v3) | 13 | 330.49 |
+| fulu | states/{slot}/validators(past_head) | 13 | 74.75 |
+| fulu | proposer_duties(next_epoch) | 14 | 44.51 |
+| fulu | attestation_data(current_slot) | 14 | 0.92 |
+| fulu | attester_duties(current_epoch) | 14 | 79.08 |
+| fulu | block_production(v3) | 14 | 329.29 |
+| fulu | states/{slot}/validators(past_head) | 14 | 74.64 |
+| fulu | proposer_duties(next_epoch) | 15 | 41.38 |
+| fulu | attestation_data(current_slot) | 15 | 1.08 |
+| fulu | attester_duties(current_epoch) | 15 | 71.78 |
+| fulu | block_production(v3) | 15 | 336.72 |
+| fulu | states/{slot}/validators(past_head) | 15 | 85.38 |
+| fulu | proposer_duties(next_epoch) | 16 | 39.61 |
+| fulu | attestation_data(current_slot) | 16 | 0.98 |
+| fulu | attester_duties(current_epoch) | 16 | 73.70 |
+| fulu | block_production(v3) | 16 | 326.53 |
+| fulu | states/{slot}/validators(past_head) | 16 | 78.53 |
+| fulu | proposer_duties(next_epoch) | 17 | 56.49 |
+| fulu | attestation_data(current_slot) | 17 | 0.73 |
+| fulu | attester_duties(current_epoch) | 17 | 74.82 |
+| fulu | block_production(v3) | 17 | 334.64 |
+| fulu | states/{slot}/validators(past_head) | 17 | 82.82 |
+| fulu | proposer_duties(next_epoch) | 18 | 38.56 |
+| fulu | attestation_data(current_slot) | 18 | 0.84 |
+| fulu | attester_duties(current_epoch) | 18 | 73.61 |
+| fulu | block_production(v3) | 18 | 321.03 |
+| fulu | states/{slot}/validators(past_head) | 18 | 80.44 |
+| fulu | proposer_duties(next_epoch) | 19 | 39.77 |
+| fulu | attestation_data(current_slot) | 19 | 0.86 |
+| fulu | attester_duties(current_epoch) | 19 | 71.61 |
+| fulu | block_production(v3) | 19 | 324.80 |
+| fulu | states/{slot}/validators(past_head) | 19 | 77.40 |
+| fulu | proposer_duties(next_epoch) | 20 | 38.06 |
+| fulu | attestation_data(current_slot) | 20 | 1.39 |
+| fulu | attester_duties(current_epoch) | 20 | 72.40 |
+| fulu | block_production(v3) | 20 | 322.51 |
+| fulu | states/{slot}/validators(past_head) | 20 | 78.09 |
+| fulu | proposer_duties(next_epoch) | 21 | 33.22 |
+| fulu | attestation_data(current_slot) | 21 | 0.60 |
+| fulu | attester_duties(current_epoch) | 21 | 73.91 |
+| fulu | block_production(v3) | 21 | 315.36 |
+| fulu | states/{slot}/validators(past_head) | 21 | 75.45 |
+| fulu | proposer_duties(next_epoch) | 22 | 34.72 |
+| fulu | attestation_data(current_slot) | 22 | 0.58 |
+| fulu | attester_duties(current_epoch) | 22 | 71.60 |
+| fulu | block_production(v3) | 22 | 319.10 |
+| fulu | states/{slot}/validators(past_head) | 22 | 73.59 |
+| fulu | proposer_duties(next_epoch) | 23 | 31.79 |
+| fulu | attestation_data(current_slot) | 23 | 1.20 |
+| fulu | attester_duties(current_epoch) | 23 | 73.82 |
+| fulu | block_production(v3) | 23 | 318.74 |
+| fulu | states/{slot}/validators(past_head) | 23 | 87.86 |
+| fulu | proposer_duties(next_epoch) | 24 | 44.26 |
+| fulu | attestation_data(current_slot) | 24 | 0.91 |
+| fulu | attester_duties(current_epoch) | 24 | 74.06 |
+| fulu | block_production(v3) | 24 | 332.24 |
+| fulu | states/{slot}/validators(past_head) | 24 | 76.66 |
+| fulu | proposer_duties(next_epoch) | 25 | 39.76 |
+| fulu | attestation_data(current_slot) | 25 | 0.96 |
+| fulu | attester_duties(current_epoch) | 25 | 77.14 |
+| fulu | block_production(v3) | 25 | 319.20 |
+| fulu | states/{slot}/validators(past_head) | 25 | 75.45 |
+| fulu | proposer_duties(next_epoch) | 26 | 46.53 |
+| fulu | attestation_data(current_slot) | 26 | 0.79 |
+| fulu | attester_duties(current_epoch) | 26 | 75.30 |
+| fulu | block_production(v3) | 26 | 332.34 |
+| fulu | states/{slot}/validators(past_head) | 26 | 76.51 |
+| fulu | proposer_duties(next_epoch) | 27 | 42.98 |
+| fulu | attestation_data(current_slot) | 27 | 1.19 |
+| fulu | attester_duties(current_epoch) | 27 | 73.27 |
+| fulu | block_production(v3) | 27 | 324.84 |
+| fulu | states/{slot}/validators(past_head) | 27 | 78.55 |
+| fulu | proposer_duties(next_epoch) | 28 | 45.05 |
+| fulu | attestation_data(current_slot) | 28 | 0.81 |
+| fulu | attester_duties(current_epoch) | 28 | 71.98 |
+| fulu | block_production(v3) | 28 | 333.52 |
+| fulu | states/{slot}/validators(past_head) | 28 | 76.90 |
+| fulu | proposer_duties(next_epoch) | 29 | 54.04 |
+| fulu | attestation_data(current_slot) | 29 | 1.33 |
+| fulu | attester_duties(current_epoch) | 29 | 73.25 |
+| fulu | block_production(v3) | 29 | 336.43 |
+| fulu | states/{slot}/validators(past_head) | 29 | 197.21 |
+| fulu | proposer_duties(next_epoch) | 30 | 57.38 |
+| fulu | attestation_data(current_slot) | 30 | 1.14 |
+| fulu | attester_duties(current_epoch) | 30 | 72.87 |
+| fulu | block_production(v3) | 30 | 342.83 |
+| fulu | states/{slot}/validators(past_head) | 30 | 79.78 |
+| fulu | proposer_duties(next_epoch) | 31 | 40.35 |
+| fulu | attestation_data(current_slot) | 31 | 0.95 |
+| fulu | attester_duties(current_epoch) | 31 | 74.51 |
+| fulu | block_production(v3) | 31 | 324.60 |
+| fulu | states/{slot}/validators(past_head) | 31 | 97.54 |
+| fulu | proposer_duties(next_epoch) | 32 | 44.72 |
+| fulu | attestation_data(current_slot) | 32 | 1.23 |
+| fulu | attester_duties(current_epoch) | 32 | 78.78 |
+| fulu | block_production(v3) | 32 | 320.84 |
+| fulu | states/{slot}/validators(past_head) | 32 | 72.15 |
+| gloas | proposer_duties(next_epoch) | 1 | 307.38 |
+| gloas | attestation_data(current_slot) | 1 | 1.49 |
+| gloas | attester_duties(current_epoch) | 1 | 80.54 |
+| gloas | block_production(v4) | 1 | 602.94 |
+| gloas | states/{slot}/validators(past_head) | 1 | 91.29 |
+| gloas | proposer_duties(next_epoch) | 2 | 310.00 |
+| gloas | attestation_data(current_slot) | 2 | 0.95 |
+| gloas | attester_duties(current_epoch) | 2 | 73.39 |
+| gloas | block_production(v4) | 2 | 599.75 |
+| gloas | states/{slot}/validators(past_head) | 2 | 80.82 |
+| gloas | proposer_duties(next_epoch) | 3 | 328.32 |
+| gloas | attestation_data(current_slot) | 3 | 1.27 |
+| gloas | attester_duties(current_epoch) | 3 | 72.35 |
+| gloas | block_production(v4) | 3 | 613.24 |
+| gloas | states/{slot}/validators(past_head) | 3 | 78.45 |
+| gloas | proposer_duties(next_epoch) | 4 | 326.07 |
+| gloas | attestation_data(current_slot) | 4 | 0.83 |
+| gloas | attester_duties(current_epoch) | 4 | 72.68 |
+| gloas | block_production(v4) | 4 | 614.01 |
+| gloas | states/{slot}/validators(past_head) | 4 | 76.30 |
+| gloas | proposer_duties(next_epoch) | 5 | 313.62 |
+| gloas | attestation_data(current_slot) | 5 | 0.87 |
+| gloas | attester_duties(current_epoch) | 5 | 74.23 |
+| gloas | block_production(v4) | 5 | 627.30 |
+| gloas | states/{slot}/validators(past_head) | 5 | 77.93 |
+| gloas | proposer_duties(next_epoch) | 6 | 306.50 |
+| gloas | attestation_data(current_slot) | 6 | 1.05 |
+| gloas | attester_duties(current_epoch) | 6 | 72.32 |
+| gloas | block_production(v4) | 6 | 605.60 |
+| gloas | states/{slot}/validators(past_head) | 6 | 75.82 |
+| gloas | proposer_duties(next_epoch) | 7 | 305.71 |
+| gloas | attestation_data(current_slot) | 7 | 0.98 |
+| gloas | attester_duties(current_epoch) | 7 | 72.38 |
+| gloas | block_production(v4) | 7 | 619.21 |
+| gloas | states/{slot}/validators(past_head) | 7 | 77.21 |
+| gloas | proposer_duties(next_epoch) | 8 | 329.03 |
+| gloas | attestation_data(current_slot) | 8 | 1.24 |
+| gloas | attester_duties(current_epoch) | 8 | 74.09 |
+| gloas | block_production(v4) | 8 | 610.34 |
+| gloas | states/{slot}/validators(past_head) | 8 | 75.81 |
+| gloas | proposer_duties(next_epoch) | 9 | 350.92 |
+| gloas | attestation_data(current_slot) | 9 | 1.36 |
+| gloas | attester_duties(current_epoch) | 9 | 73.86 |
+| gloas | block_production(v4) | 9 | 627.86 |
+| gloas | states/{slot}/validators(past_head) | 9 | 75.02 |
+| gloas | proposer_duties(next_epoch) | 10 | 393.67 |
+| gloas | attestation_data(current_slot) | 10 | 1.11 |
+| gloas | attester_duties(current_epoch) | 10 | 74.32 |
+| gloas | block_production(v4) | 10 | 610.59 |
+| gloas | states/{slot}/validators(past_head) | 10 | 75.41 |
+| gloas | proposer_duties(next_epoch) | 11 | 313.42 |
+| gloas | attestation_data(current_slot) | 11 | 1.27 |
+| gloas | attester_duties(current_epoch) | 11 | 71.46 |
+| gloas | block_production(v4) | 11 | 598.76 |
+| gloas | states/{slot}/validators(past_head) | 11 | 74.01 |
+| gloas | proposer_duties(next_epoch) | 12 | 308.59 |
+| gloas | attestation_data(current_slot) | 12 | 1.01 |
+| gloas | attester_duties(current_epoch) | 12 | 71.31 |
+| gloas | block_production(v4) | 12 | 620.12 |
+| gloas | states/{slot}/validators(past_head) | 12 | 75.40 |
+| gloas | proposer_duties(next_epoch) | 13 | 317.08 |
+| gloas | attestation_data(current_slot) | 13 | 0.83 |
+| gloas | attester_duties(current_epoch) | 13 | 74.32 |
+| gloas | block_production(v4) | 13 | 603.65 |
+| gloas | states/{slot}/validators(past_head) | 13 | 73.79 |
+| gloas | proposer_duties(next_epoch) | 14 | 311.52 |
+| gloas | attestation_data(current_slot) | 14 | 0.79 |
+| gloas | attester_duties(current_epoch) | 14 | 72.42 |
+| gloas | block_production(v4) | 14 | 599.54 |
+| gloas | states/{slot}/validators(past_head) | 14 | 76.91 |
+| gloas | proposer_duties(next_epoch) | 15 | 345.60 |
+| gloas | attestation_data(current_slot) | 15 | 0.92 |
+| gloas | attester_duties(current_epoch) | 15 | 72.93 |
+| gloas | block_production(v4) | 15 | 629.14 |
+| gloas | states/{slot}/validators(past_head) | 15 | 75.54 |
+| gloas | proposer_duties(next_epoch) | 16 | 306.77 |
+| gloas | attestation_data(current_slot) | 16 | 1.31 |
+| gloas | attester_duties(current_epoch) | 16 | 71.78 |
+| gloas | block_production(v4) | 16 | 609.22 |
+| gloas | states/{slot}/validators(past_head) | 16 | 75.22 |
+| gloas | proposer_duties(next_epoch) | 17 | 319.01 |
+| gloas | attestation_data(current_slot) | 17 | 1.31 |
+| gloas | attester_duties(current_epoch) | 17 | 73.72 |
+| gloas | block_production(v4) | 17 | 603.35 |
+| gloas | states/{slot}/validators(past_head) | 17 | 74.63 |
+| gloas | proposer_duties(next_epoch) | 18 | 315.90 |
+| gloas | attestation_data(current_slot) | 18 | 0.99 |
+| gloas | attester_duties(current_epoch) | 18 | 71.59 |
+| gloas | block_production(v4) | 18 | 623.64 |
+| gloas | states/{slot}/validators(past_head) | 18 | 73.46 |
+| gloas | proposer_duties(next_epoch) | 19 | 302.65 |
+| gloas | attestation_data(current_slot) | 19 | 1.23 |
+| gloas | attester_duties(current_epoch) | 19 | 73.26 |
+| gloas | block_production(v4) | 19 | 614.78 |
+| gloas | states/{slot}/validators(past_head) | 19 | 74.73 |
+| gloas | proposer_duties(next_epoch) | 20 | 406.65 |
+| gloas | attestation_data(current_slot) | 20 | 1.86 |
+| gloas | attester_duties(current_epoch) | 20 | 72.09 |
+| gloas | block_production(v4) | 20 | 610.89 |
+| gloas | states/{slot}/validators(past_head) | 20 | 74.81 |
+| gloas | proposer_duties(next_epoch) | 21 | 319.29 |
+| gloas | attestation_data(current_slot) | 21 | 0.83 |
+| gloas | attester_duties(current_epoch) | 21 | 72.97 |
+| gloas | block_production(v4) | 21 | 732.22 |
+| gloas | states/{slot}/validators(past_head) | 21 | 83.98 |
+| gloas | proposer_duties(next_epoch) | 22 | 321.29 |
+| gloas | attestation_data(current_slot) | 22 | 1.16 |
+| gloas | attester_duties(current_epoch) | 22 | 77.34 |
+| gloas | block_production(v4) | 22 | 608.88 |
+| gloas | states/{slot}/validators(past_head) | 22 | 76.68 |
+| gloas | proposer_duties(next_epoch) | 23 | 315.33 |
+| gloas | attestation_data(current_slot) | 23 | 0.77 |
+| gloas | attester_duties(current_epoch) | 23 | 73.03 |
+| gloas | block_production(v4) | 23 | 623.64 |
+| gloas | states/{slot}/validators(past_head) | 23 | 92.36 |
+| gloas | proposer_duties(next_epoch) | 24 | 312.57 |
+| gloas | attestation_data(current_slot) | 24 | 0.99 |
+| gloas | attester_duties(current_epoch) | 24 | 111.24 |
+| gloas | block_production(v4) | 24 | 626.94 |
+| gloas | states/{slot}/validators(past_head) | 24 | 75.21 |
+| gloas | proposer_duties(next_epoch) | 25 | 329.70 |
+| gloas | attestation_data(current_slot) | 25 | 1.13 |
+| gloas | attester_duties(current_epoch) | 25 | 71.63 |
+| gloas | block_production(v4) | 25 | 669.88 |
+| gloas | states/{slot}/validators(past_head) | 25 | 84.81 |
+| gloas | proposer_duties(next_epoch) | 26 | 313.19 |
+| gloas | attestation_data(current_slot) | 26 | 1.16 |
+| gloas | attester_duties(current_epoch) | 26 | 73.70 |
+| gloas | block_production(v4) | 26 | 654.37 |
+| gloas | states/{slot}/validators(past_head) | 26 | 74.58 |
+| gloas | proposer_duties(next_epoch) | 27 | 310.06 |
+| gloas | attestation_data(current_slot) | 27 | 1.10 |
+| gloas | attester_duties(current_epoch) | 27 | 71.80 |
+| gloas | block_production(v4) | 27 | 600.01 |
+| gloas | states/{slot}/validators(past_head) | 27 | 74.15 |
+| gloas | proposer_duties(next_epoch) | 28 | 315.60 |
+| gloas | attestation_data(current_slot) | 28 | 0.77 |
+| gloas | attester_duties(current_epoch) | 28 | 72.54 |
+| gloas | block_production(v4) | 28 | 608.58 |
+| gloas | states/{slot}/validators(past_head) | 28 | 79.94 |
+| gloas | proposer_duties(next_epoch) | 29 | 342.05 |
+| gloas | attestation_data(current_slot) | 29 | 0.96 |
+| gloas | attester_duties(current_epoch) | 29 | 84.78 |
+| gloas | block_production(v4) | 29 | 601.14 |
+| gloas | states/{slot}/validators(past_head) | 29 | 76.43 |
+| gloas | proposer_duties(next_epoch) | 30 | 328.25 |
+| gloas | attestation_data(current_slot) | 30 | 1.55 |
+| gloas | attester_duties(current_epoch) | 30 | 74.42 |
+| gloas | block_production(v4) | 30 | 732.19 |
+| gloas | states/{slot}/validators(past_head) | 30 | 84.99 |
+| gloas | proposer_duties(next_epoch) | 31 | 318.67 |
+| gloas | attestation_data(current_slot) | 31 | 1.02 |
+| gloas | attester_duties(current_epoch) | 31 | 74.02 |
+| gloas | block_production(v4) | 31 | 637.36 |
+| gloas | states/{slot}/validators(past_head) | 31 | 93.88 |
+| gloas | proposer_duties(next_epoch) | 32 | 333.29 |
+| gloas | attestation_data(current_slot) | 32 | 0.91 |
+| gloas | attester_duties(current_epoch) | 32 | 92.45 |
+| gloas | block_production(v4) | 32 | 651.45 |
+| gloas | states/{slot}/validators(past_head) | 32 | 76.23 |
+
+### Advanced-state notes (main claim)
+
+Epoch-by-epoch incremental first-call cost stays **flat** as N grows:
+
+| fork | endpoint | N=1 first_ms | N=32 first_ms | base N=32 first_ms |
+|---|---|---:|---:|---:|
+| fulu | proposer_duties(next_epoch) | ~41 | ~45 | ~1326 |
+| fulu | attestation_data(current_slot) | ~1.5 | ~1.2 | ~1275 |
+| fulu | attester_duties(current_epoch) | ~96 | ~79 | ~1319 |
+| fulu | block_production(v3) | ~323 | ~321 | ~2065 |
+| gloas | proposer_duties(next_epoch) | ~307 | ~333 | ~10798 |
+| gloas | attestation_data(current_slot) | ~1.5 | ~0.9 | ~11054 |
+| gloas | attester_duties(current_epoch) | ~81 | ~92 | ~10669 |
+| gloas | block_production(v4) | ~603 | ~651 | ~11956 |
+
+Jump-to-N repeats/concurrent for duties drop to ~1 ms (single-flight + retained advanced state). `states/{slot}/validators` remains cheap on both variants.
+
