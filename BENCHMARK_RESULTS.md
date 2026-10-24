@@ -6,20 +6,33 @@ Evidence-only results for [sigp/lighthouse#9530](https://github.com/sigp/lightho
 ## Reproduce
 
 ```bash
-# Base everything on upstream unstable ef55e2fbf (same as the fix branches).
-git fetch https://github.com/sigp/lighthouse ef55e2fbf
-git checkout cursor/stale-head-benchmark
+# Extended harness lives on cursor/stale-head-benchmark-v2 (forked from the frozen
+# public tip cursor/stale-head-benchmark @ 4504e7bdf). Do not push to the frozen branch.
+git fetch origin cursor/stale-head-benchmark-v2
+git checkout cursor/stale-head-benchmark-v2
 
 # Release build; http_api integration tests are compiled out in debug.
 RUST_LOG=error \
 STALE_HEAD_BENCH_VALIDATORS=32768 \
-STALE_HEAD_BENCH_VARIANT=base \
+STALE_HEAD_BENCH_VARIANT=base-v2 \
 STALE_HEAD_BENCH_FORKS=fulu,gloas \
 cargo test -p http_api --release --test bn_http_api_tests \
   stale_head_http_api_benchmark -- --ignored --nocapture
+
+# Epoch-by-epoch incremental cost (main #9530 claim):
+RUST_LOG=error \
+STALE_HEAD_BENCH_VALIDATORS=32768 \
+STALE_HEAD_BENCH_VARIANT=base-v2 \
+STALE_HEAD_BENCH_FORKS=fulu,gloas \
+cargo test -p http_api --release --test bn_http_api_tests \
+  stale_head_incremental_epoch_benchmark -- --ignored --nocapture
 ```
 
-To compare against the existing fix branches (do not modify those branches; cherry-pick locally):
+To compare against the advanced-state fix, use the merge branch
+`cursor/stale-head-benchmark-advanced-state` (= this v2 harness merged with
+`cursor/stale-head-advanced-state`) and set `STALE_HEAD_BENCH_VARIANT=advanced-state`.
+
+Historical result-cache comparisons (do not modify the frozen `cursor/stale-head-benchmark`):
 
 ```bash
 # + proposer duties fix
