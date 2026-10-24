@@ -202,3 +202,13 @@ Cherry-picks: `658aa05d7` then `b28a77474`
 | attestation-fix | attestation_data | 9785.52 | **0.90** | **0.94** | **2.11** |
 | both-fixes | proposer_duties | 9813.34 | **0.80** | **0.99** | **2.18** |
 | both-fixes | attestation_data | 9684.46 | **0.83** | **0.59** | **1.70** |
+
+---
+
+## Graphs
+
+See [`benchmark-graphs/README.md`](benchmark-graphs/README.md) for the full set of plots (Fulu and Gloas, base scaling and fix-vs-base).
+
+![Fulu base cost vs staleness](benchmark-graphs/fulu_base_cost_vs_staleness.png)
+
+![Fulu fix vs base (log)](benchmark-graphs/fulu_fix_vs_base_log.png)
