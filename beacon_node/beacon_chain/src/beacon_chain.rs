@@ -1,3 +1,6 @@
+use crate::attestation_production_cache::{
+    AttestationProductionCache, AttestationProductionCacheEntry, with_attestation_production_cache,
+};
 use crate::attestation_verification::{
     Error as AttestationError, VerifiedAggregatedAttestation, VerifiedAttestation,
     VerifiedUnaggregatedAttestation, batch_verify_aggregated_attestations,
@@ -505,6 +508,9 @@ pub struct BeaconChain<T: BeaconChainTypes> {
     pub beacon_proposer_cache: Arc<Mutex<BeaconProposerCache>>,
     /// Caches a map of `validator_index -> validator_pubkey`.
     pub(crate) validator_pubkey_cache: RwLock<ValidatorPubkeyCache<T>>,
+    /// Single-flight cache for justified checkpoint + committee cache when producing attestations
+    /// against a head whose epoch differs from the request (stale-head / skipped-epoch path).
+    pub attestation_production_cache: Mutex<AttestationProductionCache>,
     /// A cache used when producing attestations whilst the head block is still being imported.
     pub early_attester_cache: EarlyAttesterCache<T::EthSpec>,
     /// A cache used to keep track of various block timings.
@@ -2154,31 +2160,51 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
                 // required information.
                 (justified_checkpoint, committee_len)
             } else {
-                // We assume that the `Pending` state has the same shufflings as a `Full` state
-                // for the same block. Analysis: https://hackmd.io/@dapplion/gloas_dependant_root
-                let (advanced_state_root, mut state) = self
-                    .store
-                    .get_advanced_hot_state(beacon_block_root, request_slot, beacon_state_root)?
-                    .ok_or(Error::MissingBeaconState(beacon_state_root))?;
-                if state.current_epoch() < request_epoch {
-                    partial_state_advance(
-                        &mut state,
-                        Some(advanced_state_root),
-                        request_epoch.start_slot(T::EthSpec::slots_per_epoch()),
-                        self.builder_onboarding_cache.as_deref(),
-                        &self.spec,
-                    )
-                    .map_err(Error::StateAdvanceError)?;
+                // Slow path: head epoch != request epoch. Advance (or reuse a cached advance) to
+                // obtain the justified checkpoint and committee lengths. Concurrent callers for
+                // the same `(request_epoch, beacon_block_root)` single-flight via OnceCell so a
+                // stale head does not replay every empty epoch on every VC/Charon retry (#9530).
+                let cached = with_attestation_production_cache(
+                    &self.attestation_production_cache,
+                    request_epoch,
+                    beacon_block_root,
+                    || -> Result<AttestationProductionCacheEntry, Error> {
+                        // We assume that the `Pending` state has the same shufflings as a `Full`
+                        // state for the same block.
+                        // Analysis: https://hackmd.io/@dapplion/gloas_dependant_root
+                        let (advanced_state_root, mut state) = self
+                            .store
+                            .get_advanced_hot_state(
+                                beacon_block_root,
+                                request_slot,
+                                beacon_state_root,
+                            )?
+                            .ok_or(Error::MissingBeaconState(beacon_state_root))?;
+                        if state.current_epoch() < request_epoch {
+                            partial_state_advance(
+                                &mut state,
+                                Some(advanced_state_root),
+                                request_epoch.start_slot(T::EthSpec::slots_per_epoch()),
+                                self.builder_onboarding_cache.as_deref(),
+                                &self.spec,
+                            )
+                            .map_err(Error::StateAdvanceError)?;
+                        }
 
-                    state.build_committee_cache(RelativeEpoch::Current, &self.spec)?;
-                }
+                        state.build_committee_cache(RelativeEpoch::Current, &self.spec)?;
+                        let committee_cache =
+                            state.committee_cache(RelativeEpoch::Current)?.clone();
+
+                        Ok(AttestationProductionCacheEntry::new(
+                            state.current_justified_checkpoint(),
+                            committee_cache,
+                        ))
+                    },
+                )?;
 
                 (
-                    state.current_justified_checkpoint(),
-                    state
-                        .get_beacon_committee(request_slot, request_index)?
-                        .committee
-                        .len(),
+                    cached.justified_checkpoint,
+                    cached.committee_len(request_slot, request_index)?,
                 )
             };
 

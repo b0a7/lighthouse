@@ -1,5 +1,6 @@
 use crate::ChainConfig;
 use crate::CustodyContext;
+use crate::attestation_production_cache::AttestationProductionCache;
 use crate::beacon_chain::{
     BEACON_CHAIN_DB_KEY, CanonicalHead, LightClientProducerEvent, OP_POOL_DB_KEY,
 };
@@ -1061,6 +1062,7 @@ where
             envelope_times_cache: <_>::default(),
             pre_finalization_block_cache: <_>::default(),
             validator_pubkey_cache: RwLock::new(validator_pubkey_cache),
+            attestation_production_cache: Mutex::new(AttestationProductionCache::default()),
             early_attester_cache: <_>::default(),
             light_client_server_cache: LightClientServerCache::new(),
             light_client_server_tx: self.light_client_server_tx,

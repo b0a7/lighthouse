@@ -1,3 +1,4 @@
+pub mod attestation_production_cache;
 pub mod attestation_rewards;
 pub mod attestation_simulator;
 pub mod attestation_verification;
