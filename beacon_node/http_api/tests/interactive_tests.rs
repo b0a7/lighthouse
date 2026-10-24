@@ -1,4 +1,5 @@
 //! Generic tests that make use of the (newer) `InteractiveApiTester`
+use beacon_chain::beacon_proposer_cache::compute_proposer_duties_from_head;
 use beacon_chain::custody_context::NodeCustodyType;
 use beacon_chain::{
     ChainConfig,
@@ -13,6 +14,7 @@ use eth2::types::DepositContractData;
 use eth2::types::ProduceBlockV3Response;
 use execution_layer::{ForkchoiceState, PayloadAttributes};
 use fixed_bytes::FixedBytesExtended;
+use futures::future::join_all;
 use http_api::test_utils::InteractiveTester;
 use parking_lot::Mutex;
 use slot_clock::SlotClock;
@@ -23,9 +25,23 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Duration;
 use types::{
-    Address, EthSpec, ExecPayload, ExecutionBlockHash, ForkName, Hash256, ProposerPreparationData,
-    Slot, Spec,
+    Address, Epoch, EthSpec, ExecPayload, ExecutionBlockHash, ForkName, Hash256,
+    ProposerPreparationData, Slot, Spec,
 };
+
+/// Sample count for the global `beacon_state_processing_process_epoch` histogram.
+fn process_epoch_sample_count() -> u64 {
+    metrics::gather()
+        .iter()
+        .find(|mf| mf.get_name() == "beacon_state_processing_process_epoch")
+        .map(|mf| {
+            mf.get_metric()
+                .iter()
+                .map(|m| m.get_histogram().get_sample_count())
+                .sum()
+        })
+        .unwrap_or(0)
+}
 
 type E = Spec;
 
@@ -1303,4 +1319,203 @@ async fn lighthouse_custody_info() {
         info.custody_columns.len(),
         info.custody_group_count as usize
     );
+}
+
+/// Regression test for expensive next-epoch proposer-duty recomputation on a stale head.
+///
+/// With a head many epochs behind the wall clock (e.g. during a prolonged outage), each
+/// next-epoch duties request advances a clone of the unadvanced head state up to the current
+/// epoch. Without caching / single-flight dedup, concurrent VC retries redo that work every
+/// call. See https://github.com/sigp/lighthouse/issues/9530.
+#[tokio::test(flavor = "multi_thread")]
+async fn proposer_duties_next_epoch_cached_with_stale_head() {
+    let spec = test_spec::<E>();
+
+    // Post-Fulu next-epoch duties are fully determined by the decision root, so they are safe
+    // to serve from `BeaconProposerCache`. Pre-Fulu next-epoch duties still depend on the end of
+    // the current epoch and keep the uncached path.
+    if !spec.is_fulu_scheduled() {
+        return;
+    }
+
+    // Use 64 validators so Gloas genesis (balance-weighted proposer selection) succeeds.
+    let validator_count = 64;
+    let slots_per_epoch = E::slots_per_epoch();
+    let stale_epochs = 12_u64;
+
+    let tester = InteractiveTester::<E>::new(Some(spec.clone()), validator_count).await;
+    let harness = &tester.harness;
+    let client = &tester.client;
+    let mock_el = harness.mock_execution_layer.as_ref().unwrap();
+    mock_el.server.all_payloads_valid();
+
+    // Build ~3 epochs so the head is non-trivial, then jump the clock far past the head with
+    // no new blocks (stale head, wall-clock still advancing).
+    let num_slots = 3 * slots_per_epoch;
+    harness.advance_slot();
+    harness
+        .extend_chain_with_sync(
+            num_slots as usize,
+            BlockStrategy::OnCanonicalHead,
+            AttestationStrategy::AllValidators,
+            SyncCommitteeStrategy::NoValidators,
+            LightClientStrategy::Disabled,
+        )
+        .await;
+
+    let head_slot = harness.head_slot();
+    let head_epoch = head_slot.epoch(slots_per_epoch);
+    assert_eq!(head_epoch, Epoch::new(3));
+
+    let future_slot = head_slot + Slot::new(stale_epochs * slots_per_epoch);
+    harness.set_current_slot(future_slot);
+
+    let current_epoch = harness.chain.epoch().unwrap();
+    assert_eq!(current_epoch, head_epoch + stale_epochs);
+    let next_epoch = current_epoch + 1;
+
+    let head = harness.chain.canonical_head.cached_head();
+    let head_block_root = head.head_block_root();
+    let decision_root = head
+        .snapshot
+        .beacon_state
+        .proposer_shuffling_decision_root_at_epoch(next_epoch, head_block_root, &harness.spec)
+        .unwrap();
+
+    // (a) First v2 / v1 calls must prime the proposer cache for (next_epoch, decision_root).
+    let before_first = process_epoch_sample_count();
+    let v2_first = client
+        .get_validator_duties_proposer_v2(next_epoch)
+        .await
+        .unwrap();
+    let v1_first = client
+        .get_validator_duties_proposer(next_epoch)
+        .await
+        .unwrap();
+    let after_first = process_epoch_sample_count();
+    let first_delta = after_first.saturating_sub(before_first);
+
+    assert!(
+        first_delta > 0,
+        "first next-epoch duties call with a stale head should process epochs, got delta {first_delta}"
+    );
+    assert!(
+        harness
+            .chain
+            .beacon_proposer_cache
+            .lock()
+            .get_epoch::<E>(decision_root, next_epoch)
+            .is_some(),
+        "next-epoch proposer duties should prime the proposer cache for decision root {decision_root:?}"
+    );
+    assert_eq!(v1_first.data, v2_first.data);
+
+    // (b) A second identical call should not redo epoch processing.
+    let before_second = process_epoch_sample_count();
+    let v2_second = client
+        .get_validator_duties_proposer_v2(next_epoch)
+        .await
+        .unwrap();
+    let after_second = process_epoch_sample_count();
+    let second_delta = after_second.saturating_sub(before_second);
+    assert_eq!(
+        second_delta, 0,
+        "cached next-epoch duties must not re-run process_epoch (delta={second_delta})"
+    );
+    assert_eq!(v2_second, v2_first);
+
+    // Concurrent callers should single-flight: about as much work as one call, not N times.
+    // Cache is already warm, so the expected delta is ~0 (still ≪ N * first_delta).
+    const CONCURRENT: usize = 4;
+    let before_concurrent = process_epoch_sample_count();
+    let concurrent_results = join_all((0..CONCURRENT).map(|_| {
+        let client = client.clone();
+        async move {
+            client
+                .get_validator_duties_proposer_v2(next_epoch)
+                .await
+                .unwrap()
+        }
+    }))
+    .await;
+    let after_concurrent = process_epoch_sample_count();
+    let concurrent_delta = after_concurrent.saturating_sub(before_concurrent);
+    assert!(
+        concurrent_delta < first_delta,
+        "concurrent next-epoch duties should not redo a full stale-head advance \
+         (concurrent_delta={concurrent_delta}, first_delta={first_delta})"
+    );
+    assert!(
+        concurrent_delta
+            < first_delta
+                .saturating_mul(CONCURRENT as u64)
+                .saturating_div(2),
+        "concurrent calls must cost about one compute, not N times \
+         (concurrent_delta={concurrent_delta}, first_delta={first_delta}, n={CONCURRENT})"
+    );
+    for result in &concurrent_results {
+        assert_eq!(result, &v2_first);
+    }
+
+    // (c) Cached result matches a freshly computed result from the head.
+    let (fresh_indices, fresh_dependent_root, fresh_legacy_root, _, _) =
+        compute_proposer_duties_from_head(next_epoch, harness.chain.as_ref()).unwrap();
+    assert_eq!(
+        v2_first
+            .data
+            .iter()
+            .map(|d| d.validator_index as usize)
+            .collect::<Vec<_>>(),
+        fresh_indices
+    );
+    assert_eq!(v2_first.dependent_root, fresh_dependent_root);
+    assert_eq!(v1_first.dependent_root, fresh_legacy_root);
+
+    // Import a new block at the wall-clock slot. Duties must still match a fresh compute
+    // (and must not stick to a stale cache entry if the decision root changed).
+    let prior_decision_root = decision_root;
+    let state = harness.get_current_state();
+    let validators: Vec<usize> = (0..validator_count).collect();
+    harness
+        .add_attested_block_at_slot(future_slot, state, &validators)
+        .await
+        .unwrap();
+
+    let new_head = harness.chain.canonical_head.cached_head();
+    let new_head_block_root = new_head.head_block_root();
+    assert_ne!(new_head_block_root, head_block_root);
+
+    let new_decision_root = new_head
+        .snapshot
+        .beacon_state
+        .proposer_shuffling_decision_root_at_epoch(next_epoch, new_head_block_root, &harness.spec)
+        .unwrap();
+
+    let v2_after_block = client
+        .get_validator_duties_proposer_v2(next_epoch)
+        .await
+        .unwrap();
+    let (fresh_after, fresh_dep_after, _, _, _) =
+        compute_proposer_duties_from_head(next_epoch, harness.chain.as_ref()).unwrap();
+    assert_eq!(
+        v2_after_block
+            .data
+            .iter()
+            .map(|d| d.validator_index as usize)
+            .collect::<Vec<_>>(),
+        fresh_after
+    );
+    assert_eq!(v2_after_block.dependent_root, fresh_dep_after);
+
+    if new_decision_root != prior_decision_root {
+        assert!(
+            harness
+                .chain
+                .beacon_proposer_cache
+                .lock()
+                .get_epoch::<E>(new_decision_root, next_epoch)
+                .is_some(),
+            "after a decision-root change, duties must be recomputed under the new key"
+        );
+    }
 }
