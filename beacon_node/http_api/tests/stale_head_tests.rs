@@ -136,7 +136,6 @@ fn assert_incremental(delta: u64, baseline: u64, label: &str) {
 
 /// Attestation data: after a cold stale jump, each further epoch should cost ~1 process_epoch
 /// of work, not another full replay from the head.
-#[ignore = "repro: fails until the advanced head state cache is wired in (layer 5)"]
 #[tokio::test(flavor = "multi_thread")]
 async fn attestation_data_incremental_with_stale_head() {
     let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
@@ -306,7 +305,6 @@ async fn proposer_duties_incremental_with_stale_head() {
 }
 
 /// Attester duties for the current epoch: same incremental property via the shuffling path.
-#[ignore = "repro: fails until the advanced head state cache is wired in (layer 5)"]
 #[tokio::test(flavor = "multi_thread")]
 async fn attester_duties_incremental_with_stale_head() {
     let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
@@ -705,6 +703,34 @@ async fn current_epoch_attester_duties_after_next_epoch_proposer_do_not_replay()
             }
         }
     }
+}
+
+/// A shuffling-cache hit must not advance the head state. Gossip verification and a repeat
+/// attester-duty call both take this path.
+#[tokio::test(flavor = "multi_thread")]
+async fn shuffling_cache_hit_does_not_advance_head_state() {
+    let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
+    let ctx = StaleHeadHarness::setup(12).await;
+    let indices: Vec<u64> = (0..ctx.validator_count as u64).collect();
+    let epoch = ctx.harness().chain.epoch().unwrap();
+
+    ctx.client()
+        .post_validator_duties_attester(epoch, &indices)
+        .await
+        .unwrap();
+    // Drop the advanced state only. The shuffling cache for this epoch stays populated.
+    ctx.harness().chain.advanced_head_state.invalidate();
+
+    let before = process_epoch_sample_count();
+    ctx.client()
+        .post_validator_duties_attester(epoch, &indices)
+        .await
+        .expect("attester duties from the shuffling cache");
+    let delta = process_epoch_sample_count().saturating_sub(before);
+    assert_eq!(
+        delta, 0,
+        "a shuffling-cache hit must not replay empty epochs (delta={delta})"
+    );
 }
 
 /// PTC duties on Gloas stay incremental under a stale head.
