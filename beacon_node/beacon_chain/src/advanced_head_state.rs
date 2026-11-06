@@ -142,6 +142,27 @@ impl<E: EthSpec> AdvancedHeadStateCache<E> {
         publish_gauges(&inner, None);
     }
 
+    /// Generation observed by `invalidate`. A store must present the same value to be kept.
+    pub(crate) fn generation(&self) -> u64 {
+        self.lock().generation
+    }
+
+    /// Clone of the complete entry for `head_block_root` whose slot is `<= max_slot`, if any.
+    pub(crate) fn complete_seed(
+        &self,
+        head_block_root: Hash256,
+        max_slot: Slot,
+    ) -> Option<AdvancedHeadStateEntry<E>> {
+        let inner = self.lock();
+        inner.complete.as_ref().and_then(|entry| {
+            if entry.head_block_root == head_block_root && entry.state.slot() <= max_slot {
+                Some(entry.clone())
+            } else {
+                None
+            }
+        })
+    }
+
     /// Update gauges from the current entries. `wall_clock_slot` sets the lag gauges.
     pub(crate) fn scrape_metrics(&self, wall_clock_slot: Option<Slot>) {
         let inner = self.lock();
@@ -346,6 +367,30 @@ impl<E: EthSpec> AdvancedHeadStateCache<E> {
             AdvanceKind::Complete => &mut inner.complete,
         };
         store(slot, entry);
+    }
+
+    /// Update the complete entry after the state-advance timer (proper per-slot roots).
+    ///
+    /// `generation` must be the value observed before the advance started. A head change in
+    /// between bumps the generation and this store is ignored.
+    pub(crate) fn observe_complete_advanced_state(
+        &self,
+        generation: u64,
+        head_block_root: Hash256,
+        state_root: Hash256,
+        state: &BeaconState<E>,
+    ) {
+        let entry = AdvancedHeadStateEntry::new(head_block_root, state_root, state.clone());
+        if !block_root_matches(&entry) {
+            metrics::inc_counter(&metrics::ADVANCED_HEAD_STATE_BLOCK_ROOT_MISMATCH);
+            return;
+        }
+        let mut inner = self.lock();
+        if inner.generation != generation {
+            metrics::inc_counter(&metrics::ADVANCED_HEAD_STATE_STALE_STORE);
+            return;
+        }
+        store(&mut inner.complete, entry);
     }
 }
 
