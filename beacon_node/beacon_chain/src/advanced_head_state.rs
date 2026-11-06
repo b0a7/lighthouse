@@ -451,3 +451,454 @@ fn publish_one(
         }
     }
 }
+
+#[cfg(not(debug_assertions))]
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::errors::BeaconChainError;
+    use crate::test_utils::{BeaconChainHarness, EphemeralHarnessType};
+    use state_processing::state_advance::{complete_state_advance, partial_state_advance};
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::{Arc, Barrier};
+    use std::thread;
+    use std::time::Duration;
+    use types::{ChainSpec, EthSpec, Hash256, Slot};
+
+    type E = types::Spec;
+
+    struct Fixture {
+        harness: BeaconChainHarness<EphemeralHarnessType<E>>,
+        block_root: Hash256,
+        state_root: Hash256,
+        base_slot: Slot,
+    }
+
+    fn fixture() -> Fixture {
+        let harness = BeaconChainHarness::<EphemeralHarnessType<E>>::builder(E::default())
+            .default_spec()
+            .deterministic_keypairs(E::slots_per_epoch() as usize)
+            .fresh_ephemeral_store()
+            .build();
+        let head = harness.chain.canonical_head.cached_head();
+        let block_root = head.head_block_root();
+        let state_root = head.head_state_root();
+        let base_slot = head.head_slot();
+        Fixture {
+            harness,
+            block_root,
+            state_root,
+            base_slot,
+        }
+    }
+
+    fn spec(fixture: &Fixture) -> Arc<ChainSpec> {
+        fixture.harness.chain.spec.clone()
+    }
+
+    fn base_state(fixture: &Fixture) -> BeaconState<E> {
+        fixture
+            .harness
+            .chain
+            .canonical_head
+            .cached_head()
+            .snapshot
+            .beacon_state
+            .clone()
+    }
+
+    fn request(
+        fixture: &Fixture,
+        kind: AdvanceKind,
+        target: Slot,
+        max_store: Slot,
+    ) -> AdvanceRequest {
+        AdvanceRequest {
+            kind,
+            head_block_root: fixture.block_root,
+            target_slot: target,
+            max_store_slot: max_store,
+            wall_clock_slot: max_store,
+        }
+    }
+
+    fn advance_partial(
+        spec: &ChainSpec,
+    ) -> impl FnMut(
+        BeaconState<E>,
+        Hash256,
+        Slot,
+    ) -> Result<(Hash256, BeaconState<E>), BeaconChainError>
+    + '_ {
+        |mut state, state_root, target| {
+            partial_state_advance(&mut state, Some(state_root), target, None, spec)?;
+            Ok((Hash256::ZERO, state))
+        }
+    }
+
+    fn advance_complete(
+        spec: &ChainSpec,
+    ) -> impl FnMut(
+        BeaconState<E>,
+        Hash256,
+        Slot,
+    ) -> Result<(Hash256, BeaconState<E>), BeaconChainError>
+    + '_ {
+        |mut state, state_root, target| {
+            complete_state_advance(&mut state, Some(state_root), target, None, spec)?;
+            let root = state.update_tree_hash_cache()?;
+            Ok((root, state))
+        }
+    }
+
+    fn stored_slots<E: EthSpec>(cache: &AdvancedHeadStateCache<E>) -> (Option<Slot>, Option<Slot>) {
+        let inner = cache.inner.lock();
+        (
+            inner.partial.as_ref().map(|entry| entry.state.slot()),
+            inner.complete.as_ref().map(|entry| entry.state.slot()),
+        )
+    }
+
+    #[test]
+    fn returns_the_exact_target_and_keeps_a_later_entry() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = AdvancedHeadStateCache::<E>::default();
+        let later = fixture.base_slot + 4;
+        let earlier = fixture.base_slot + 2;
+        let state = base_state(&fixture);
+
+        let got = cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, later, later),
+                || Ok((fixture.state_root, state.clone())),
+                advance_partial(&spec),
+            )
+            .unwrap();
+        assert_eq!(got.state.slot(), later);
+
+        let mut loads = 0;
+        let got = cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, earlier, later),
+                || {
+                    loads += 1;
+                    Ok((fixture.state_root, state.clone()))
+                },
+                advance_partial(&spec),
+            )
+            .unwrap();
+        assert_eq!(got.state.slot(), earlier);
+        assert_eq!(loads, 1, "a later entry must not seed an earlier target");
+        assert_eq!(stored_slots(&cache).0, Some(later));
+    }
+
+    #[test]
+    fn partial_request_seeds_from_the_furthest_entry_of_either_kind() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = AdvancedHeadStateCache::<E>::default();
+        let state = base_state(&fixture);
+        let partial_slot = fixture.base_slot + 2;
+        let complete_slot = fixture.base_slot + 5;
+        let target = fixture.base_slot + 8;
+
+        cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, partial_slot, target),
+                || Ok((fixture.state_root, state.clone())),
+                advance_partial(&spec),
+            )
+            .unwrap();
+        cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Complete, complete_slot, target),
+                || Ok((fixture.state_root, state.clone())),
+                advance_complete(&spec),
+            )
+            .unwrap();
+
+        let mut started_at = None;
+        cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, target, target),
+                || Ok((fixture.state_root, state.clone())),
+                |state, root, target| {
+                    started_at = Some(state.slot());
+                    advance_partial(&spec)(state, root, target)
+                },
+            )
+            .unwrap();
+        assert_eq!(started_at, Some(complete_slot));
+    }
+
+    #[test]
+    fn complete_request_does_not_seed_from_a_partial_entry() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = AdvancedHeadStateCache::<E>::default();
+        let state = base_state(&fixture);
+        let partial_slot = fixture.base_slot + 5;
+        let target = fixture.base_slot + 8;
+
+        cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, partial_slot, target),
+                || Ok((fixture.state_root, state.clone())),
+                advance_partial(&spec),
+            )
+            .unwrap();
+
+        let mut started_at = None;
+        cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Complete, target, target),
+                || Ok((fixture.state_root, state.clone())),
+                |state, root, target| {
+                    started_at = Some(state.slot());
+                    advance_complete(&spec)(state, root, target)
+                },
+            )
+            .unwrap();
+        assert_eq!(started_at, Some(fixture.base_slot));
+        assert!(stored_slots(&cache).1.unwrap() <= target);
+    }
+
+    #[test]
+    fn targets_past_the_retain_window_are_not_stored() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = AdvancedHeadStateCache::<E>::default();
+        let state = base_state(&fixture);
+        let ceiling = fixture.base_slot + 2;
+        let target = fixture.base_slot + 6;
+
+        let got = cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, target, ceiling),
+                || Ok((fixture.state_root, state.clone())),
+                advance_partial(&spec),
+            )
+            .unwrap();
+        assert_eq!(got.state.slot(), target);
+        assert_eq!(stored_slots(&cache).0, Some(ceiling));
+    }
+
+    #[test]
+    fn repeated_exact_target_does_not_advance_again() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = AdvancedHeadStateCache::<E>::default();
+        let state = base_state(&fixture);
+        let target = fixture.base_slot + 3;
+        cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, target, target),
+                || Ok((fixture.state_root, state.clone())),
+                advance_partial(&spec),
+            )
+            .unwrap();
+
+        let mut advances = 0;
+        let got = cache
+            .get_or_advance_to(
+                request(&fixture, AdvanceKind::Partial, target, target),
+                || Ok((fixture.state_root, state.clone())),
+                |state, root, target| {
+                    advances += 1;
+                    advance_partial(&spec)(state, root, target)
+                },
+            )
+            .unwrap();
+        assert_eq!(got.state.slot(), target);
+        assert_eq!(advances, 0);
+    }
+
+    #[test]
+    fn mismatched_block_root_is_not_retained() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = AdvancedHeadStateCache::<E>::default();
+        let state = base_state(&fixture);
+        let target = fixture.base_slot + 1;
+        let mut wrong = request(&fixture, AdvanceKind::Partial, target, target);
+        wrong.head_block_root = Hash256::from_slice(&[0x11; 32]);
+
+        let got = cache
+            .get_or_advance_to(
+                wrong,
+                || Ok((fixture.state_root, state.clone())),
+                advance_partial(&spec),
+            )
+            .unwrap();
+        assert_eq!(got.state.slot(), target);
+        assert_eq!(stored_slots(&cache), (None, None));
+    }
+
+    #[test]
+    fn invalidate_does_not_wait_and_rejects_the_in_flight_store() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = Arc::new(AdvancedHeadStateCache::<E>::default());
+        let state = base_state(&fixture);
+        let target = fixture.base_slot + 4;
+        let started = Arc::new(Barrier::new(2));
+        let release = Arc::new(Barrier::new(2));
+
+        let cache_worker = cache.clone();
+        let started_worker = started.clone();
+        let release_worker = release.clone();
+        let block_root = fixture.block_root;
+        let state_root = fixture.state_root;
+        let worker = thread::spawn(move || {
+            cache_worker.get_or_advance_to(
+                AdvanceRequest {
+                    kind: AdvanceKind::Complete,
+                    head_block_root: block_root,
+                    target_slot: target,
+                    max_store_slot: target,
+                    wall_clock_slot: target,
+                },
+                || Ok::<_, BeaconChainError>((state_root, state.clone())),
+                |state, root, target| {
+                    started_worker.wait();
+                    release_worker.wait();
+                    advance_complete(&spec)(state, root, target)
+                },
+            )
+        });
+
+        started.wait();
+        let (invalidate_done_tx, invalidate_done_rx) = std::sync::mpsc::channel();
+        let cache_invalidate = cache.clone();
+        thread::spawn(move || {
+            cache_invalidate.invalidate();
+            let _ = invalidate_done_tx.send(());
+        });
+        assert!(
+            invalidate_done_rx
+                .recv_timeout(Duration::from_secs(2))
+                .is_ok(),
+            "invalidate blocked on the in-flight advance"
+        );
+        release.wait();
+        worker.join().unwrap().unwrap();
+        assert_eq!(
+            stored_slots(&cache),
+            (None, None),
+            "a store that races invalidate must be dropped"
+        );
+    }
+
+    #[test]
+    fn concurrent_identical_requests_advance_once() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = Arc::new(AdvancedHeadStateCache::<E>::default());
+        let state = base_state(&fixture);
+        let target = fixture.base_slot + 2;
+        let advances = Arc::new(AtomicUsize::new(0));
+        let start = Arc::new(Barrier::new(2));
+        let block_root = fixture.block_root;
+        let state_root = fixture.state_root;
+        let workers = (0..2)
+            .map(|_| {
+                let cache = cache.clone();
+                let state = state.clone();
+                let spec = spec.clone();
+                let advances = advances.clone();
+                let start = start.clone();
+                thread::spawn(move || {
+                    start.wait();
+                    cache.get_or_advance_to(
+                        AdvanceRequest {
+                            kind: AdvanceKind::Partial,
+                            head_block_root: block_root,
+                            target_slot: target,
+                            max_store_slot: target,
+                            wall_clock_slot: target,
+                        },
+                        || Ok::<_, BeaconChainError>((state_root, state.clone())),
+                        |state, root, target| {
+                            advances.fetch_add(1, Ordering::SeqCst);
+                            advance_partial(&spec)(state, root, target)
+                        },
+                    )
+                })
+            })
+            .collect::<Vec<_>>();
+        for worker in workers {
+            let entry = worker.join().unwrap().unwrap();
+            assert_eq!(entry.state.slot(), target);
+        }
+        assert_eq!(advances.load(Ordering::SeqCst), 1);
+    }
+
+    #[test]
+    fn far_advance_does_not_block_a_near_request() {
+        let fixture = fixture();
+        let spec = spec(&fixture);
+        let cache = Arc::new(AdvancedHeadStateCache::<E>::default());
+        let state = base_state(&fixture);
+        let near = fixture.base_slot + 2;
+        let far = fixture.base_slot + 40;
+        let started = Arc::new(Barrier::new(2));
+        let release = Arc::new(Barrier::new(2));
+        let block_root = fixture.block_root;
+        let state_root = fixture.state_root;
+
+        let far_cache = cache.clone();
+        let far_state = state.clone();
+        let far_spec = spec.clone();
+        let started_far = started.clone();
+        let release_far = release.clone();
+        let far_worker = thread::spawn(move || {
+            far_cache.get_or_advance_to(
+                AdvanceRequest {
+                    kind: AdvanceKind::Partial,
+                    head_block_root: block_root,
+                    target_slot: far,
+                    max_store_slot: near,
+                    wall_clock_slot: near,
+                },
+                || Ok::<_, BeaconChainError>((state_root, far_state.clone())),
+                |state, root, target| {
+                    if target == far {
+                        started_far.wait();
+                        release_far.wait();
+                    }
+                    advance_partial(&far_spec)(state, root, target)
+                },
+            )
+        });
+
+        started.wait();
+        let near_cache = cache.clone();
+        let near_state = state.clone();
+        let near_spec = spec.clone();
+        let (near_done_tx, near_done_rx) = std::sync::mpsc::channel();
+        thread::spawn(move || {
+            let result = near_cache.get_or_advance_to(
+                AdvanceRequest {
+                    kind: AdvanceKind::Partial,
+                    head_block_root: block_root,
+                    target_slot: near,
+                    max_store_slot: near,
+                    wall_clock_slot: near,
+                },
+                || Ok::<_, BeaconChainError>((state_root, near_state.clone())),
+                |state, root, target| advance_partial(&near_spec)(state, root, target),
+            );
+            let _ = near_done_tx.send(result.map(|entry| entry.state.slot()));
+        });
+        let near_result = near_done_rx.recv_timeout(Duration::from_secs(10));
+        release.wait();
+        far_worker.join().unwrap().unwrap();
+        assert_eq!(
+            near_result
+                .expect("near request blocked on the far advance")
+                .unwrap(),
+            near
+        );
+    }
+}
