@@ -53,16 +53,13 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
         // Atomically read some values from the head whilst avoiding holding cached head `Arc` any
         // longer than necessary. If the head has a payload envelope (Gloas full head), cheaply
         // clone the `Arc` so we can pass it to block production without a DB load.
-        let (head_slot, head_block_root, head_state_root, head_payload_status, head_envelope) = {
-            let head = self.canonical_head.cached_head();
-            (
-                head.head_slot(),
-                head.head_block_root(),
-                head.head_state_root(),
-                head.head_payload_status(),
-                head.snapshot.execution_envelope.clone(),
-            )
-        };
+        let head = self.canonical_head.cached_head();
+        let (head_slot, head_block_root, head_payload_status, head_envelope) = (
+            head.head_slot(),
+            head.head_block_root(),
+            head.head_payload_status(),
+            head.snapshot.execution_envelope.clone(),
+        );
 
         let result = if head_slot < slot {
             // Attempt an aggressive re-org if configured and the conditions are right.
@@ -80,15 +77,25 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
                     parent_envelope: inputs.parent_envelope,
                 }
             } else {
-                // Continuation: the new block builds on the current head. Fetch the head state
-                // advanced through to `slot`, which should be present in the state cache thanks to
-                // the state advance timer.
-                let parent_state_root = head_state_root;
+                // Continuation: the new block builds on the current head. Use a complete
+                // retained advance so a stale head does not replay every empty epoch.
+                // Partial advances are unsuitable here (invalid intermediate state roots).
+                // The state is at exactly `slot`, including when the state-advance timer has
+                // already moved its complete entry to `slot + 1`.
                 let (state_root, state) = self
-                    .store
-                    .get_advanced_hot_state(head_block_root, slot, parent_state_root)
-                    .map_err(BlockProductionError::FailedToLoadState)?
-                    .ok_or(BlockProductionError::UnableToProduceAtSlot(slot))?;
+                    .head_state_advanced_from_cached_head(
+                        &head,
+                        crate::advanced_head_state::AdvanceKind::Complete,
+                        slot,
+                    )
+                    .map_err(|e| {
+                        warn!(
+                            %slot,
+                            error = ?e,
+                            "Failed to completely advance head state for block production"
+                        );
+                        BlockProductionError::UnableToProduceAtSlot(slot)
+                    })?;
 
                 BlockProductionState {
                     state,
