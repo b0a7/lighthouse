@@ -1930,9 +1930,10 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
             .get_node_execution_status(head_node)?
             .ok_or(Error::AttestationHeadNotInForkChoice(head_node.root()))?;
 
-        let (duties, dependent_root) = self.with_committee_cache(
+        let (duties, dependent_root) = self.with_committee_cache_ext(
             head_node.root(),
             epoch,
+            true,
             |cached_shuffling, dependent_root| {
                 let committee_cache = cached_shuffling.committee_cache.as_ref();
                 let duties = validator_indices
@@ -2243,10 +2244,12 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
         let current_epoch_attesting_info: Option<(Checkpoint, usize)>;
         let head_timer = metrics::start_timer(&metrics::ATTESTATION_PRODUCTION_HEAD_SCRAPE_SECONDS);
         let head_span = debug_span!("attestation_production_head_scrape").entered();
-        // The following braces are to prevent the `cached_head` Arc from being held for longer than
-        // required. It also helps reduce the diff for a very large PR (#3244).
+        // Read the canonical head once. Phase 2 reuses this value when it has to advance, so a
+        // head change during the advance cannot mix this block root with another head's state.
+        // The clone is an `Arc` bump; it does not hold the canonical-head lock.
+        let cached_head = self.canonical_head.cached_head();
         {
-            let head = self.head_snapshot();
+            let head = &cached_head.snapshot;
             let head_state = &head.beacon_state;
 
             // There is no value in producing an attestation to a block that is pre-finalization and
@@ -2342,22 +2345,39 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
             } else {
                 // We assume that the `Pending` state has the same shufflings as a `Full` state
                 // for the same block. Analysis: https://hackmd.io/@dapplion/gloas_dependant_root
-                let (advanced_state_root, mut state) = self
-                    .store
-                    .get_advanced_hot_state(beacon_block_root, request_slot, beacon_state_root)?
-                    .ok_or(Error::MissingBeaconState(beacon_state_root))?;
-                if state.current_epoch() < request_epoch {
-                    partial_state_advance(
-                        &mut state,
-                        Some(advanced_state_root),
-                        request_epoch.start_slot(T::EthSpec::slots_per_epoch()),
-                        self.builder_onboarding_cache.as_deref(),
-                        &self.spec,
-                    )
-                    .map_err(Error::StateAdvanceError)?;
+                //
+                // When attesting relative to the canonical head, extend the retained advanced head
+                // state so a stale head does not replay every empty epoch. The target is the
+                // first slot of `request_epoch`, so justification is read from that epoch.
+                let target_slot = request_epoch.start_slot(T::EthSpec::slots_per_epoch());
+                let head_block_root = cached_head.head_block_root();
+                let (_, mut state) = if beacon_block_root == head_block_root
+                    && cached_head.head_slot() <= target_slot
+                {
+                    self.head_state_advanced_from_cached_head(
+                        &cached_head,
+                        AdvanceKind::Partial,
+                        target_slot,
+                    )?
+                } else {
+                    let (advanced_state_root, mut state) = self
+                        .store
+                        .get_advanced_hot_state(beacon_block_root, request_slot, beacon_state_root)?
+                        .ok_or(Error::MissingBeaconState(beacon_state_root))?;
+                    if state.current_epoch() < request_epoch {
+                        partial_state_advance(
+                            &mut state,
+                            Some(advanced_state_root),
+                            target_slot,
+                            self.builder_onboarding_cache.as_deref(),
+                            &self.spec,
+                        )
+                        .map_err(Error::StateAdvanceError)?;
+                    }
+                    (advanced_state_root, state)
+                };
 
-                    state.build_committee_cache(RelativeEpoch::Current, &self.spec)?;
-                }
+                state.build_committee_cache(RelativeEpoch::Current, &self.spec)?;
 
                 (
                     state.current_justified_checkpoint(),
@@ -7785,6 +7805,56 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
     where
         F: Fn(&CachedShuffling<T::EthSpec>, Hash256) -> Result<R, Error>,
     {
+        // Gossip verification uses this entry point. It must not touch the advanced-head cache:
+        // a shuffling-cache hit has to stay off that mutex, including while some other caller is
+        // advancing. Attester duties opt in via `with_committee_cache_ext`.
+        self.with_committee_cache_ext(head_block_root, shuffling_epoch, false, map_fn)
+    }
+
+    /// Like [`Self::with_committee_cache`], but on a shuffling-cache miss for the canonical head
+    /// the state is taken from [`Self::advanced_head_state`].
+    ///
+    /// The advanced-head lookup runs only after `with_cached_shuffling` has missed. A hit never
+    /// clones a `BeaconState` and never waits on an in-flight advance.
+    fn with_committee_cache_ext<F, R>(
+        &self,
+        head_block_root: Hash256,
+        shuffling_epoch: Epoch,
+        use_advanced_head: bool,
+        map_fn: F,
+    ) -> Result<R, Error>
+    where
+        F: Fn(&CachedShuffling<T::EthSpec>, Hash256) -> Result<R, Error>,
+    {
+        let spec = &self.spec;
+        let starting_state = || {
+            if !use_advanced_head {
+                return Ok(None);
+            }
+            let head = self.canonical_head.cached_head();
+            if head.head_block_root() != head_block_root {
+                return Ok(None);
+            }
+            let mut target_slot = std::cmp::max(
+                shuffling_epoch
+                    .saturating_sub(1_u64)
+                    .start_slot(T::EthSpec::slots_per_epoch()),
+                head.head_slot(),
+            );
+            if spec.gloas_fork_epoch == Some(shuffling_epoch) {
+                target_slot = std::cmp::max(
+                    target_slot,
+                    shuffling_epoch.start_slot(T::EthSpec::slots_per_epoch()),
+                );
+            }
+            let (state_root, state) = self.head_state_advanced_from_cached_head(
+                &head,
+                AdvanceKind::Partial,
+                target_slot,
+            )?;
+            Ok(Some((state_root, state)))
+        };
+
         with_cached_shuffling(
             &self.canonical_head,
             &self.shuffling_cache,
@@ -7793,6 +7863,7 @@ impl<T: BeaconChainTypes> BeaconChain<T> {
             &self.spec,
             head_block_root,
             shuffling_epoch,
+            starting_state,
             map_fn,
         )
     }
