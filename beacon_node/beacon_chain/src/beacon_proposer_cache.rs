@@ -255,17 +255,11 @@ pub fn compute_proposer_duties_from_head<T: BeaconChainTypes>(
     request_epoch: Epoch,
     chain: &BeaconChain<T>,
 ) -> Result<(Vec<usize>, Hash256, Hash256, ExecutionVerdict, Fork), BeaconChainError> {
-    // Atomically collect information about the head whilst holding the canonical head `Arc` as
-    // short as possible.
-    let (mut state, head_state_root, head_block_root, head_node) = {
-        let head = chain.canonical_head.cached_head();
-        // Take a copy of the head state.
-        let head_state = head.snapshot.beacon_state.clone();
-        let head_state_root = head.head_state_root();
-        let head_block_root = head.head_block_root();
-        let head_node = head.head_node();
-        (head_state, head_state_root, head_block_root, head_node)
-    };
+    // One read of the head. The advance below uses this same value, so proposer indices computed
+    // from the state are cached under this block's dependent root.
+    let head = chain.canonical_head.cached_head();
+    let head_block_root = head.head_block_root();
+    let head_node = head.head_node();
 
     let execution_status = chain
         .canonical_head
@@ -273,10 +267,25 @@ pub fn compute_proposer_duties_from_head<T: BeaconChainTypes>(
         .get_node_execution_status(head_node)?
         .ok_or(BeaconChainError::HeadMissingFromForkChoice(head_block_root))?;
 
-    // Advance the state into the requested epoch.
+    // Advance via the retained advanced-head state so a stale head does not replay every empty
+    // epoch on each duties request. The target is the later of the decision slot and the head
+    // slot: a state already in this epoch must not be rewound, and a state from the next epoch
+    // must not be reused for this one.
+    let minimum_slot = chain
+        .spec
+        .proposer_shuffling_decision_slot::<T::EthSpec>(request_epoch)
+        .safe_add(1)?;
+    let target_slot = std::cmp::max(minimum_slot, head.head_slot());
+    let (state_root, mut state) = chain.head_state_advanced_from_cached_head(
+        &head,
+        crate::advanced_head_state::AdvanceKind::Partial,
+        target_slot,
+    )?;
+
+    // Ensure the state can determine proposers (no-op if already past the decision slot).
     ensure_state_can_determine_proposers_for_epoch(
         &mut state,
-        head_state_root,
+        state_root,
         request_epoch,
         chain.builder_onboarding_cache.as_deref(),
         &chain.spec,
