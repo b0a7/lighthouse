@@ -1,3 +1,4 @@
+use crate::advanced_head_state::AdvancedHeadStateCache;
 use crate::attestation_verification::{
     Error as AttestationError, VerifiedAggregatedAttestation, VerifiedAttestation,
     VerifiedUnaggregatedAttestation, batch_verify_aggregated_attestations,
@@ -507,6 +508,10 @@ pub struct BeaconChain<T: BeaconChainTypes> {
     pub(crate) validator_pubkey_cache: RwLock<ValidatorPubkeyCache<T>>,
     /// A cache used when producing attestations whilst the head block is still being imported.
     pub early_attester_cache: EarlyAttesterCache<T::EthSpec>,
+    /// Furthest empty-slot advance of the canonical head, shared across validator API paths so a
+    /// stale head costs about one epoch of work per new epoch instead of replaying every empty
+    /// epoch.
+    pub advanced_head_state: AdvancedHeadStateCache<T::EthSpec>,
     /// A cache used to keep track of various block timings.
     pub block_times_cache: Arc<RwLock<BlockTimesCache>>,
     /// A cache used to keep track of various envelope timings.
