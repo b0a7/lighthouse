@@ -14,7 +14,7 @@ use beacon_chain::test_utils::{
     LightClientStrategy, SyncCommitteeStrategy, test_spec,
 };
 use eth2::BeaconNodeHttpClient;
-use eth2::types::StateId;
+use eth2::types::{BuilderConfig, ProduceBlockV3Response, StateId};
 use futures::future::join_all;
 use http_api::test_utils::InteractiveTester;
 use state_processing::state_advance::partial_state_advance;
@@ -22,7 +22,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, LazyLock};
 use std::thread;
 use std::time::Duration;
-use types::{Epoch, EthSpec, Hash256, RelativeEpoch, Slot, Spec};
+use types::{Epoch, EthSpec, ForkName, Hash256, RelativeEpoch, Slot, Spec};
 
 type E = Spec;
 
@@ -359,6 +359,77 @@ async fn attester_duties_incremental_with_stale_head() {
     assert_incremental(third_delta, cold_delta, "attester_duties +2 epochs");
 }
 
+/// Complete empty-slot advances for block production must stay incremental under a stale head.
+///
+/// Measures `head_state_completely_advanced_to` directly (the shared mechanism used by
+/// `load_state_for_block_production`), then sanity-checks one HTTP produce for parent root.
+#[tokio::test(flavor = "multi_thread")]
+async fn block_production_incremental_with_stale_head() {
+    let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
+    let ctx = StaleHeadHarness::setup(8).await;
+    let client = ctx.client();
+    let harness = ctx.harness();
+    let chain = harness.chain.clone();
+
+    let slot0 = ctx.future_slot;
+    let before = process_epoch_sample_count();
+    let (root0, state0) = chain.head_state_completely_advanced_to(slot0).unwrap();
+    let cold_delta = process_epoch_sample_count().saturating_sub(before);
+    assert!(
+        cold_delta >= ctx.stale_epochs / 2,
+        "cold complete advance should process most empty epochs, got delta={cold_delta}"
+    );
+    assert_eq!(state0.slot(), slot0);
+    assert_ne!(root0, Hash256::ZERO);
+
+    ctx.advance_one_epoch();
+    let slot1 = chain.slot().unwrap();
+    let before_next = process_epoch_sample_count();
+    let (_root1, state1) = chain.head_state_completely_advanced_to(slot1).unwrap();
+    let next_delta = process_epoch_sample_count().saturating_sub(before_next);
+    assert_incremental(next_delta, cold_delta, "complete advance +1 epoch");
+    assert_eq!(state1.slot(), slot1);
+
+    ctx.advance_one_epoch();
+    let slot2 = chain.slot().unwrap();
+    let before_third = process_epoch_sample_count();
+    let (_root2, state2) = chain.head_state_completely_advanced_to(slot2).unwrap();
+    let third_delta = process_epoch_sample_count().saturating_sub(before_third);
+    assert_incremental(third_delta, cold_delta, "complete advance +2 epochs");
+    assert_eq!(state2.slot(), slot2);
+
+    // HTTP produce at the wall-clock slot should build on the stale head (v3 is pre-Gloas only).
+    if !harness.spec.fork_name_at_slot::<E>(slot2).gloas_enabled() {
+        let epoch = slot2.epoch(E::slots_per_epoch());
+        let duties = client
+            .get_validator_duties_proposer_v2(epoch)
+            .await
+            .unwrap();
+        let duty = duties
+            .data
+            .iter()
+            .find(|d| d.slot == slot2)
+            .expect("proposer duty for slot");
+        let proposer_index = duty.validator_index as usize;
+        let head_state = harness.get_current_state();
+        let randao = harness
+            .sign_randao_reveal(&head_state, proposer_index, slot2)
+            .into();
+        let (block_type, _) = client
+            .get_validator_blocks_v3::<E>(slot2, &randao, None, None, None)
+            .await
+            .unwrap();
+        match block_type.data {
+            ProduceBlockV3Response::Full(contents) => {
+                let (block, _) = contents.deconstruct();
+                assert_eq!(block.slot(), slot2);
+                assert_eq!(block.parent_root(), ctx.head_block_root);
+            }
+            ProduceBlockV3Response::Blinded(_) => panic!("expected full block"),
+        }
+    }
+}
+
 /// Guard: sync duties in the same sync period were already cheap before the advanced-head
 /// cache. This checks the cache does not start replaying empty epochs for them.
 #[tokio::test(flavor = "multi_thread")]
@@ -541,6 +612,81 @@ async fn state_at_slot_returns_the_requested_slot() {
         mid,
         "state_at_slot must not return a later cached state"
     );
+}
+
+/// After the complete entry has been moved to `slot + 1` (what the state-advance timer does at
+/// three quarters of the way through the slot), block production for `slot` still succeeds.
+#[tokio::test(flavor = "multi_thread")]
+async fn block_production_after_entry_advanced_past_produce_slot() {
+    let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
+    let ctx = StaleHeadHarness::setup(4).await;
+    let harness = ctx.harness();
+    let chain = harness.chain.clone();
+    let slot = ctx.future_slot;
+    let epoch = slot.epoch(E::slots_per_epoch());
+    let duties = ctx
+        .client()
+        .get_validator_duties_proposer_v2(epoch)
+        .await
+        .unwrap();
+    let duty = duties
+        .data
+        .iter()
+        .find(|duty| duty.slot == slot)
+        .expect("proposer duty for slot");
+    let proposer_index = duty.validator_index as usize;
+    let head_state = harness.get_current_state();
+    let randao = harness
+        .sign_randao_reveal(&head_state, proposer_index, slot)
+        .into();
+
+    // The state-advance timer moves the complete entry to slot+1 at three quarters of the slot.
+    let (_, ahead) = chain
+        .head_state_completely_advanced_to(slot + 1)
+        .expect("advance to slot+1");
+    assert_eq!(ahead.slot(), slot + 1);
+
+    produce_and_check_parent(&ctx, slot, &randao).await;
+}
+
+async fn produce_and_check_parent(
+    ctx: &StaleHeadHarness,
+    slot: Slot,
+    randao: &bls::SignatureBytes,
+) {
+    let harness = ctx.harness();
+    if harness.spec.fork_name_at_slot::<E>(slot).gloas_enabled() {
+        let (response, _) = ctx
+            .client()
+            .post_validator_blocks_v4::<E>(
+                slot,
+                randao,
+                None,
+                false,
+                &BuilderConfig::empty(),
+                None,
+                ForkName::Gloas,
+            )
+            .await
+            .expect("block production via v4");
+        let block = response.into_block();
+        assert_eq!(block.slot(), slot);
+        assert_eq!(block.parent_root(), ctx.head_block_root);
+    } else {
+        let (block_type, _) = ctx
+            .client()
+            .get_validator_blocks_v3::<E>(slot, randao, None, None, None)
+            .await
+            .expect("block production via v3");
+        match block_type.data {
+            ProduceBlockV3Response::Full(contents) => {
+                let (block, _) = contents.deconstruct();
+                assert_eq!(block.slot(), slot);
+                assert_eq!(block.parent_root(), ctx.head_block_root);
+            }
+            ProduceBlockV3Response::Blinded(_) => panic!("expected a full block"),
+        }
+    }
 }
 
 /// `invalidate` returns while an advance is still running, and the advance's result is not kept.
