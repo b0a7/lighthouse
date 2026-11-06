@@ -766,7 +766,23 @@ where
             }
 
             let state_advance_context = runtime_context.clone();
-            spawn_state_advance_timer(state_advance_context.executor, beacon_chain.clone());
+            let sync_globals = self.network_globals.clone();
+            spawn_state_advance_timer(
+                state_advance_context.executor,
+                beacon_chain.clone(),
+                move || {
+                    // While long-range syncing, keep the MAX_ADVANCE_DISTANCE cap. When synced or
+                    // stalled (outage), the timer may advance the in-memory entry past that cap
+                    // but still will not write the hot database past it.
+                    //
+                    // `None` means this builder has no sync view. Keep the cap in that case;
+                    // treating it as "not syncing" would lift the cap entirely.
+                    sync_globals
+                        .as_ref()
+                        .map(|g| g.is_syncing())
+                        .unwrap_or(true)
+                },
+            );
 
             if let Some(execution_layer) = beacon_chain.execution_layer.as_ref() {
                 // Only send a head update *after* genesis.
