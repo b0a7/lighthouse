@@ -18,7 +18,10 @@ use eth2::types::StateId;
 use futures::future::join_all;
 use http_api::test_utils::InteractiveTester;
 use state_processing::state_advance::partial_state_advance;
-use std::sync::LazyLock;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, LazyLock};
+use std::thread;
+use std::time::Duration;
 use types::{Epoch, EthSpec, Hash256, RelativeEpoch, Slot, Spec};
 
 type E = Spec;
@@ -243,7 +246,6 @@ async fn attestation_data_incremental_with_stale_head() {
 }
 
 /// Next-epoch proposer duties: incremental cost stays flat as the clock advances.
-#[ignore = "repro: fails until the advanced head state cache is wired in (layer 4)"]
 #[tokio::test(flavor = "multi_thread")]
 async fn proposer_duties_incremental_with_stale_head() {
     let spec = test_spec::<E>();
@@ -541,6 +543,74 @@ async fn state_at_slot_returns_the_requested_slot() {
         mid,
         "state_at_slot must not return a later cached state"
     );
+}
+
+/// `invalidate` returns while an advance is still running, and the advance's result is not kept.
+#[tokio::test(flavor = "multi_thread")]
+async fn invalidate_during_advance_is_not_blocked() {
+    let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
+    let ctx = StaleHeadHarness::setup(4).await;
+    let chain = ctx.harness().chain.clone();
+    let far = ctx.harness().head_slot() + ctx.slots_per_epoch * 80;
+    let started = Arc::new(AtomicBool::new(false));
+    let finished = Arc::new(AtomicBool::new(false));
+    let chain_worker = chain.clone();
+    let started_worker = started.clone();
+    let finished_worker = finished.clone();
+    let worker = thread::spawn(move || {
+        started_worker.store(true, Ordering::SeqCst);
+        let _ = chain_worker.head_state_advanced_to(far);
+        finished_worker.store(true, Ordering::SeqCst);
+    });
+
+    let deadline = std::time::Instant::now() + Duration::from_secs(60);
+    while !started.load(Ordering::SeqCst) && std::time::Instant::now() < deadline {
+        thread::yield_now();
+    }
+    let samples_at_start = process_epoch_sample_count();
+    while process_epoch_sample_count() == samples_at_start && std::time::Instant::now() < deadline {
+        thread::yield_now();
+    }
+    assert!(
+        process_epoch_sample_count() > samples_at_start,
+        "the advance did not start processing epochs"
+    );
+
+    // `invalidate` used to take the same mutex the advance holds, so it could not return
+    // until that advance finished. It must now return while `process_epoch` is still running.
+    let invalidate_done = Arc::new(AtomicBool::new(false));
+    let invalidate_done_worker = invalidate_done.clone();
+    let chain_invalidate = chain.clone();
+    let invalidate_thread = thread::spawn(move || {
+        chain_invalidate.advanced_head_state.invalidate();
+        invalidate_done_worker.store(true, Ordering::SeqCst);
+    });
+    let observe_deadline = std::time::Instant::now() + Duration::from_secs(60);
+    let mut returned_while_advance_running = false;
+    while std::time::Instant::now() < observe_deadline {
+        let invalidate_returned = invalidate_done.load(Ordering::SeqCst);
+        let advance_finished = finished.load(Ordering::SeqCst);
+        if invalidate_returned && !advance_finished {
+            returned_while_advance_running = true;
+            break;
+        }
+        if advance_finished {
+            break;
+        }
+        thread::yield_now();
+    }
+    assert!(
+        returned_while_advance_running,
+        "invalidate did not return while the advance was still running"
+    );
+    invalidate_thread.join().expect("invalidate thread");
+    worker.join().expect("advance thread");
+
+    let near = ctx.harness().chain.slot().unwrap();
+    let state = chain
+        .state_at_slot(near, StateSkipConfig::WithoutStateRoots)
+        .expect("state after invalidate");
+    assert_eq!(state.slot(), near);
 }
 
 /// Next-epoch proposer duties park the retained partial state past the current-epoch attester
