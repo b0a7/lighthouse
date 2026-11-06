@@ -880,7 +880,6 @@ async fn shuffling_cache_hit_does_not_advance_head_state() {
 }
 
 /// PTC duties on Gloas stay incremental under a stale head.
-#[ignore = "repro: fails until the advanced head state cache is wired in (layer 7)"]
 #[tokio::test(flavor = "multi_thread")]
 async fn ptc_duties_incremental_with_stale_head() {
     let spec = test_spec::<E>();
