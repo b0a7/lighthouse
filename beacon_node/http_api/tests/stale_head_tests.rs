@@ -243,7 +243,6 @@ async fn attestation_data_incremental_with_stale_head() {
 }
 
 /// Next-epoch proposer duties: incremental cost stays flat as the clock advances.
-#[ignore = "repro: fails until the advanced head state cache is wired in (layer 2)"]
 #[tokio::test(flavor = "multi_thread")]
 async fn proposer_duties_incremental_with_stale_head() {
     let spec = test_spec::<E>();
