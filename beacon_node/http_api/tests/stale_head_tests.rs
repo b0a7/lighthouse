@@ -761,7 +761,6 @@ async fn invalidate_during_advance_is_not_blocked() {
 /// target. Current-epoch attester duties must still be served from that advance (via the
 /// committee cache) instead of replaying every empty epoch from the head, and the duties must
 /// match an independent advance.
-#[ignore = "repro: fails until the advanced head state cache is wired in (layer 9)"]
 #[tokio::test(flavor = "multi_thread")]
 async fn current_epoch_attester_duties_after_next_epoch_proposer_do_not_replay() {
     let _metric_guard = PROCESS_EPOCH_METRIC_LOCK.lock().await;
