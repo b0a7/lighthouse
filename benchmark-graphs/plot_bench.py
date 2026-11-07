@@ -144,7 +144,7 @@ ax.set_ylabel("ms (log)  ·  first_pe is epoch count")
 ax.legend(fontsize=9)
 ax.axvline(3.5, color="#999", lw=0.8, ls="--")
 fig.suptitle(
-    f"Gloas, N={N}: base vs full stack\n"
+    f"Gloas, N={N}: base vs advanced-head-state PR stack\n"
     "32768 validators — attester first_pe is empty-epoch replay after next-epoch proposer",
     fontsize=11,
 )
@@ -261,8 +261,8 @@ def plot_fix_vs_base(fork: str, endpoints: list[str]):
                 ax.set_xlabel("epochs stale (N)")
     axes[0, 0].legend(fontsize=8, loc="upper left")
     fig.suptitle(
-        f"{fork.capitalize()} — full stack vs baseline (log scale)\n"
-        "wide translucent red = baseline; blue = stack tip 6663e7c5b",
+        f"{fork.capitalize()} — PR stack vs baseline (log scale)\n"
+        "wide translucent red = baseline; blue = stack tip 6663e7c5b (github.com/b0a7/lighthouse/stack/16)",
         fontsize=11,
     )
     fig.tight_layout(rect=(0, 0.04, 1, 1))
@@ -308,7 +308,7 @@ axes[0].set_ylabel("first-call ms after +1 epoch")
 axes[0].legend(fontsize=8)
 fig.suptitle(
     "Gloas — epoch-by-epoch walk: first-call cost after each +1 epoch step\n"
-    "baseline grows with N; full stack stays flat (~1 epoch of work)",
+    "baseline grows with N; PR stack stays flat (~1 epoch of work)",
     fontsize=11,
 )
 fig.tight_layout(rect=(0, 0.05, 1, 1))
