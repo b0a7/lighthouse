@@ -1,0 +1,1142 @@
+==== BASE INCREMENTAL Sat Nov  7 12:59:36 AM UTC 2026 ====
+    Finished `release` profile [optimized] target(s) in 0.52s
+     Running tests/main.rs (target/release/deps/bn_http_api_tests-042d739c47058d2f)
+
+running 1 test
+stale-head epoch-by-epoch incremental benchmark starting
+variant=base-25b9b7541
+validators=32768
+available_parallelism=4
+setup_epochs=3
+incremental_epochs=32
+==> building InteractiveTester fork=fulu validators=32768
+==> setup done in 38.6s (head_slot=96)
+--> incremental fork=fulu stale_epochs=1 proposer duties
+--> incremental fork=fulu stale_epochs=1 attestation_data
+--> incremental fork=fulu stale_epochs=1 attester duties
+--> incremental fork=fulu stale_epochs=1 block production
+2026-11-07T01:00:16.373797Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+2026-11-07T01:00:16.373861Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+2026-11-07T01:00:16.373864Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+2026-11-07T01:00:16.373866Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+--> incremental fork=fulu stale_epochs=1 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=2 proposer duties
+--> incremental fork=fulu stale_epochs=2 attestation_data
+--> incremental fork=fulu stale_epochs=2 attester duties
+--> incremental fork=fulu stale_epochs=2 block production
+2026-11-07T01:00:17.123791Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:00:17.123819Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:00:17.123821Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:00:17.123823Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:00:17.123824Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(3) }))
+2026-11-07T01:00:17.123825Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=2 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=3 proposer duties
+--> incremental fork=fulu stale_epochs=3 attestation_data
+--> incremental fork=fulu stale_epochs=3 attester duties
+--> incremental fork=fulu stale_epochs=3 block production
+2026-11-07T01:00:18.028920Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:00:18.028944Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:00:18.028946Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:00:18.028948Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:00:18.028949Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(3) }))
+2026-11-07T01:00:18.028950Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=3 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=4 proposer duties
+--> incremental fork=fulu stale_epochs=4 attestation_data
+--> incremental fork=fulu stale_epochs=4 attester duties
+--> incremental fork=fulu stale_epochs=4 block production
+2026-11-07T01:00:19.065145Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:00:19.065170Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:00:19.065171Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:00:19.065173Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:00:19.065174Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(3) }))
+2026-11-07T01:00:19.065175Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=4 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=5 proposer duties
+--> incremental fork=fulu stale_epochs=5 attestation_data
+--> incremental fork=fulu stale_epochs=5 attester duties
+--> incremental fork=fulu stale_epochs=5 block production
+2026-11-07T01:00:20.249093Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:00:20.249121Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:00:20.249123Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:00:20.249124Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:00:20.249126Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(3) }))
+2026-11-07T01:00:20.249127Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=5 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=6 proposer duties
+--> incremental fork=fulu stale_epochs=6 attestation_data
+--> incremental fork=fulu stale_epochs=6 attester duties
+--> incremental fork=fulu stale_epochs=6 block production
+2026-11-07T01:00:21.627778Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:00:21.627819Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:00:21.627822Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:00:21.627824Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:00:21.627826Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(3) }))
+2026-11-07T01:00:21.627828Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=6 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=7 proposer duties
+--> incremental fork=fulu stale_epochs=7 attestation_data
+--> incremental fork=fulu stale_epochs=7 attester duties
+--> incremental fork=fulu stale_epochs=7 block production
+2026-11-07T01:00:23.188327Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:00:23.188357Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:00:23.188360Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:00:23.188361Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:00:23.188363Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(3) }))
+2026-11-07T01:00:23.188364Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=7 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=8 proposer duties
+--> incremental fork=fulu stale_epochs=8 attestation_data
+--> incremental fork=fulu stale_epochs=8 attester duties
+--> incremental fork=fulu stale_epochs=8 block production
+2026-11-07T01:00:24.999608Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:00:24.999642Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:00:24.999643Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:00:24.999645Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:00:24.999647Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(3) }))
+2026-11-07T01:00:24.999649Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=8 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=9 proposer duties
+--> incremental fork=fulu stale_epochs=9 attestation_data
+--> incremental fork=fulu stale_epochs=9 attester duties
+--> incremental fork=fulu stale_epochs=9 block production
+2026-11-07T01:00:26.943080Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:00:26.943115Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:00:26.943117Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:00:26.943120Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:00:26.943123Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(3) }))
+2026-11-07T01:00:26.943124Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=9 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=10 proposer duties
+--> incremental fork=fulu stale_epochs=10 attestation_data
+--> incremental fork=fulu stale_epochs=10 attester duties
+--> incremental fork=fulu stale_epochs=10 block production
+2026-11-07T01:00:29.051986Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:00:29.052018Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:00:29.052020Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:00:29.052021Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:00:29.052023Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(3) }))
+2026-11-07T01:00:29.052024Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=10 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=11 proposer duties
+--> incremental fork=fulu stale_epochs=11 attestation_data
+--> incremental fork=fulu stale_epochs=11 attester duties
+--> incremental fork=fulu stale_epochs=11 block production
+2026-11-07T01:00:31.282470Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:00:31.282502Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:00:31.282504Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:00:31.282505Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:00:31.282507Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(3) }))
+2026-11-07T01:00:31.282508Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=11 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=12 proposer duties
+--> incremental fork=fulu stale_epochs=12 attestation_data
+--> incremental fork=fulu stale_epochs=12 attester duties
+--> incremental fork=fulu stale_epochs=12 block production
+2026-11-07T01:00:33.705031Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:00:33.705068Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:00:33.705071Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:00:33.705072Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:00:33.705074Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(3) }))
+2026-11-07T01:00:33.705075Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=12 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=13 proposer duties
+--> incremental fork=fulu stale_epochs=13 attestation_data
+--> incremental fork=fulu stale_epochs=13 attester duties
+--> incremental fork=fulu stale_epochs=13 block production
+2026-11-07T01:00:36.296584Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:00:36.296623Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:00:36.296625Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:00:36.296626Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:00:36.296627Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(3) }))
+2026-11-07T01:00:36.296628Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=13 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=14 proposer duties
+--> incremental fork=fulu stale_epochs=14 attestation_data
+test stale_head_benchmark::stale_head_incremental_epoch_benchmark has been running for over 60 seconds
+--> incremental fork=fulu stale_epochs=14 attester duties
+--> incremental fork=fulu stale_epochs=14 block production
+2026-11-07T01:00:39.172027Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:00:39.172073Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:00:39.172075Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:00:39.172077Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:00:39.172078Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(3) }))
+2026-11-07T01:00:39.172080Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=14 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=15 proposer duties
+--> incremental fork=fulu stale_epochs=15 attestation_data
+--> incremental fork=fulu stale_epochs=15 attester duties
+--> incremental fork=fulu stale_epochs=15 block production
+2026-11-07T01:00:42.335531Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:00:42.335566Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:00:42.335568Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:00:42.335569Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:00:42.335571Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(3) }))
+2026-11-07T01:00:42.335573Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=15 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=16 proposer duties
+--> incremental fork=fulu stale_epochs=16 attestation_data
+--> incremental fork=fulu stale_epochs=16 attester duties
+--> incremental fork=fulu stale_epochs=16 block production
+2026-11-07T01:00:45.473696Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:00:45.473729Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:00:45.473731Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:00:45.473732Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:00:45.473734Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(3) }))
+2026-11-07T01:00:45.473736Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=16 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=17 proposer duties
+--> incremental fork=fulu stale_epochs=17 attestation_data
+--> incremental fork=fulu stale_epochs=17 attester duties
+--> incremental fork=fulu stale_epochs=17 block production
+2026-11-07T01:00:48.750020Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:00:48.750056Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:00:48.750058Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:00:48.750059Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:00:48.750060Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(3) }))
+2026-11-07T01:00:48.750062Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=17 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=18 proposer duties
+--> incremental fork=fulu stale_epochs=18 attestation_data
+--> incremental fork=fulu stale_epochs=18 attester duties
+--> incremental fork=fulu stale_epochs=18 block production
+2026-11-07T01:00:52.159745Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:00:52.159778Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:00:52.159780Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:00:52.159782Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:00:52.159783Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(3) }))
+2026-11-07T01:00:52.159785Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=18 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=19 proposer duties
+--> incremental fork=fulu stale_epochs=19 attestation_data
+--> incremental fork=fulu stale_epochs=19 attester duties
+--> incremental fork=fulu stale_epochs=19 block production
+2026-11-07T01:00:55.720836Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:00:55.720871Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:00:55.720873Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:00:55.720874Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:00:55.720876Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(3) }))
+2026-11-07T01:00:55.720877Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=19 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=20 proposer duties
+--> incremental fork=fulu stale_epochs=20 attestation_data
+--> incremental fork=fulu stale_epochs=20 attester duties
+--> incremental fork=fulu stale_epochs=20 block production
+2026-11-07T01:00:59.470210Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:00:59.470245Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:00:59.470247Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:00:59.470249Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:00:59.470250Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(3) }))
+2026-11-07T01:00:59.470251Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=20 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=21 proposer duties
+--> incremental fork=fulu stale_epochs=21 attestation_data
+--> incremental fork=fulu stale_epochs=21 attester duties
+--> incremental fork=fulu stale_epochs=21 block production
+2026-11-07T01:01:03.310537Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:01:03.310570Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:01:03.310572Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:01:03.310573Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:01:03.310575Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(3) }))
+2026-11-07T01:01:03.310576Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=21 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=22 proposer duties
+--> incremental fork=fulu stale_epochs=22 attestation_data
+--> incremental fork=fulu stale_epochs=22 attester duties
+--> incremental fork=fulu stale_epochs=22 block production
+2026-11-07T01:01:07.305246Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:01:07.305278Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:01:07.305280Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:01:07.305282Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:01:07.305283Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(3) }))
+2026-11-07T01:01:07.305285Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=22 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=23 proposer duties
+--> incremental fork=fulu stale_epochs=23 attestation_data
+--> incremental fork=fulu stale_epochs=23 attester duties
+--> incremental fork=fulu stale_epochs=23 block production
+2026-11-07T01:01:11.422749Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:01:11.422787Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:01:11.422790Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:01:11.422792Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:01:11.422793Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(3) }))
+2026-11-07T01:01:11.422795Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=23 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=24 proposer duties
+--> incremental fork=fulu stale_epochs=24 attestation_data
+--> incremental fork=fulu stale_epochs=24 attester duties
+--> incremental fork=fulu stale_epochs=24 block production
+2026-11-07T01:01:15.841549Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:01:15.841601Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:01:15.841608Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:01:15.841615Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:01:15.841618Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(3) }))
+2026-11-07T01:01:15.841620Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=24 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=25 proposer duties
+--> incremental fork=fulu stale_epochs=25 attestation_data
+--> incremental fork=fulu stale_epochs=25 attester duties
+--> incremental fork=fulu stale_epochs=25 block production
+2026-11-07T01:01:20.342168Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:01:20.342203Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:01:20.342205Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:01:20.342207Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:01:20.342209Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(3) }))
+2026-11-07T01:01:20.342210Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=25 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=26 proposer duties
+--> incremental fork=fulu stale_epochs=26 attestation_data
+--> incremental fork=fulu stale_epochs=26 attester duties
+--> incremental fork=fulu stale_epochs=26 block production
+2026-11-07T01:01:24.962526Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:01:24.962559Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:01:24.962561Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:01:24.962562Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:01:24.962563Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(3) }))
+2026-11-07T01:01:24.962565Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=26 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=27 proposer duties
+--> incremental fork=fulu stale_epochs=27 attestation_data
+--> incremental fork=fulu stale_epochs=27 attester duties
+--> incremental fork=fulu stale_epochs=27 block production
+2026-11-07T01:01:29.730309Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:01:29.730354Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:01:29.730356Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:01:29.730358Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:01:29.730359Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(3) }))
+2026-11-07T01:01:29.730361Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=27 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=28 proposer duties
+--> incremental fork=fulu stale_epochs=28 attestation_data
+--> incremental fork=fulu stale_epochs=28 attester duties
+--> incremental fork=fulu stale_epochs=28 block production
+2026-11-07T01:01:34.690240Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:01:34.690319Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:01:34.690322Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:01:34.690325Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:01:34.690328Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(3) }))
+2026-11-07T01:01:34.690329Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=28 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=29 proposer duties
+--> incremental fork=fulu stale_epochs=29 attestation_data
+--> incremental fork=fulu stale_epochs=29 attester duties
+--> incremental fork=fulu stale_epochs=29 block production
+2026-11-07T01:01:39.935359Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:01:39.935429Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:01:39.935432Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:01:39.935433Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:01:39.935435Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(3) }))
+2026-11-07T01:01:39.935437Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=29 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=30 proposer duties
+--> incremental fork=fulu stale_epochs=30 attestation_data
+--> incremental fork=fulu stale_epochs=30 attester duties
+--> incremental fork=fulu stale_epochs=30 block production
+2026-11-07T01:01:45.390926Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:01:45.391015Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:01:45.391018Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:01:45.391020Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:01:45.391024Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(3) }))
+2026-11-07T01:01:45.391042Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=30 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=31 proposer duties
+--> incremental fork=fulu stale_epochs=31 attestation_data
+--> incremental fork=fulu stale_epochs=31 attester duties
+--> incremental fork=fulu stale_epochs=31 block production
+2026-11-07T01:01:50.966730Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:01:50.966760Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:01:50.966762Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:01:50.966763Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:01:50.966765Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(3) }))
+2026-11-07T01:01:50.966766Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=31 states/{slot}/validators
+--> incremental fork=fulu stale_epochs=32 proposer duties
+--> incremental fork=fulu stale_epochs=32 attestation_data
+--> incremental fork=fulu stale_epochs=32 attester duties
+--> incremental fork=fulu stale_epochs=32 block production
+2026-11-07T01:01:56.757160Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:01:56.757191Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:01:56.757193Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:01:56.757195Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:01:56.757196Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(3) }))
+2026-11-07T01:01:56.757197Z ERROR beacon_chain::beacon_chain: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(3) }))
+--> incremental fork=fulu stale_epochs=32 states/{slot}/validators
+==> building InteractiveTester fork=gloas validators=32768
+==> setup done in 38.2s (head_slot=96)
+--> incremental fork=gloas stale_epochs=1 proposer duties
+--> incremental fork=gloas stale_epochs=1 attestation_data
+--> incremental fork=gloas stale_epochs=1 attester duties
+--> incremental fork=gloas stale_epochs=1 ptc duties
+--> incremental fork=gloas stale_epochs=1 block production
+2026-11-07T01:02:36.451693Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+2026-11-07T01:02:36.451786Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+2026-11-07T01:02:36.451789Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+2026-11-07T01:02:36.451817Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(4), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=1 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=2 proposer duties
+--> incremental fork=gloas stale_epochs=2 attestation_data
+--> incremental fork=gloas stale_epochs=2 attester duties
+--> incremental fork=gloas stale_epochs=2 ptc duties
+--> incremental fork=gloas stale_epochs=2 block production
+2026-11-07T01:02:39.524596Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:02:39.524634Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:02:39.524635Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+2026-11-07T01:02:39.524637Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(3) }))
+2026-11-07T01:02:39.524638Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(3) }))
+2026-11-07T01:02:39.524640Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(3) }))
+2026-11-07T01:02:39.524641Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(5), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=2 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=3 proposer duties
+--> incremental fork=gloas stale_epochs=3 attestation_data
+--> incremental fork=gloas stale_epochs=3 attester duties
+--> incremental fork=gloas stale_epochs=3 ptc duties
+--> incremental fork=gloas stale_epochs=3 block production
+2026-11-07T01:02:44.137675Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:02:44.137732Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:02:44.137734Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+2026-11-07T01:02:44.137736Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(3) }))
+2026-11-07T01:02:44.137738Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(3) }))
+2026-11-07T01:02:44.137739Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(3) }))
+2026-11-07T01:02:44.137740Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(6), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=3 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=4 proposer duties
+--> incremental fork=gloas stale_epochs=4 attestation_data
+--> incremental fork=gloas stale_epochs=4 attester duties
+--> incremental fork=gloas stale_epochs=4 ptc duties
+--> incremental fork=gloas stale_epochs=4 block production
+2026-11-07T01:02:50.440432Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:02:50.440483Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:02:50.440485Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+2026-11-07T01:02:50.440487Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(3) }))
+2026-11-07T01:02:50.440488Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(3) }))
+2026-11-07T01:02:50.440490Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(3) }))
+2026-11-07T01:02:50.440491Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(7), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=4 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=5 proposer duties
+--> incremental fork=gloas stale_epochs=5 attestation_data
+--> incremental fork=gloas stale_epochs=5 attester duties
+--> incremental fork=gloas stale_epochs=5 ptc duties
+--> incremental fork=gloas stale_epochs=5 block production
+2026-11-07T01:02:58.201153Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:02:58.201205Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:02:58.201208Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+2026-11-07T01:02:58.201210Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(3) }))
+2026-11-07T01:02:58.201211Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(3) }))
+2026-11-07T01:02:58.201213Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(3) }))
+2026-11-07T01:02:58.201216Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(8), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=5 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=6 proposer duties
+--> incremental fork=gloas stale_epochs=6 attestation_data
+--> incremental fork=gloas stale_epochs=6 attester duties
+--> incremental fork=gloas stale_epochs=6 ptc duties
+--> incremental fork=gloas stale_epochs=6 block production
+2026-11-07T01:03:07.595693Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:03:07.595750Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:03:07.595753Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+2026-11-07T01:03:07.595755Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(3) }))
+2026-11-07T01:03:07.595756Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(3) }))
+2026-11-07T01:03:07.595757Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(3) }))
+2026-11-07T01:03:07.595759Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(9), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=6 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=7 proposer duties
+--> incremental fork=gloas stale_epochs=7 attestation_data
+--> incremental fork=gloas stale_epochs=7 attester duties
+--> incremental fork=gloas stale_epochs=7 ptc duties
+--> incremental fork=gloas stale_epochs=7 block production
+2026-11-07T01:03:18.622947Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:03:18.622982Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:03:18.622985Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+2026-11-07T01:03:18.622986Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(3) }))
+2026-11-07T01:03:18.622988Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(3) }))
+2026-11-07T01:03:18.622989Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(3) }))
+2026-11-07T01:03:18.622991Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(10), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=7 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=8 proposer duties
+--> incremental fork=gloas stale_epochs=8 attestation_data
+--> incremental fork=gloas stale_epochs=8 attester duties
+--> incremental fork=gloas stale_epochs=8 ptc duties
+--> incremental fork=gloas stale_epochs=8 block production
+2026-11-07T01:03:31.224235Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:03:31.224357Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:03:31.224361Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+2026-11-07T01:03:31.224363Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(3) }))
+2026-11-07T01:03:31.224364Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(3) }))
+2026-11-07T01:03:31.224366Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(3) }))
+2026-11-07T01:03:31.224369Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(11), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=8 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=9 proposer duties
+--> incremental fork=gloas stale_epochs=9 attestation_data
+--> incremental fork=gloas stale_epochs=9 attester duties
+--> incremental fork=gloas stale_epochs=9 ptc duties
+--> incremental fork=gloas stale_epochs=9 block production
+2026-11-07T01:03:46.756274Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:03:46.756325Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:03:46.756328Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+2026-11-07T01:03:46.756330Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(3) }))
+2026-11-07T01:03:46.756331Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(3) }))
+2026-11-07T01:03:46.756333Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(3) }))
+2026-11-07T01:03:46.756334Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(12), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=9 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=10 proposer duties
+--> incremental fork=gloas stale_epochs=10 attestation_data
+--> incremental fork=gloas stale_epochs=10 attester duties
+--> incremental fork=gloas stale_epochs=10 ptc duties
+--> incremental fork=gloas stale_epochs=10 block production
+2026-11-07T01:04:03.036316Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:04:03.036388Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:04:03.036391Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+2026-11-07T01:04:03.036393Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(3) }))
+2026-11-07T01:04:03.036394Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(3) }))
+2026-11-07T01:04:03.036395Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(3) }))
+2026-11-07T01:04:03.036397Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(13), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=10 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=11 proposer duties
+--> incremental fork=gloas stale_epochs=11 attestation_data
+--> incremental fork=gloas stale_epochs=11 attester duties
+--> incremental fork=gloas stale_epochs=11 ptc duties
+--> incremental fork=gloas stale_epochs=11 block production
+2026-11-07T01:04:20.805901Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:04:20.805992Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:04:20.805995Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+2026-11-07T01:04:20.805997Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(3) }))
+2026-11-07T01:04:20.805998Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(3) }))
+2026-11-07T01:04:20.805999Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(3) }))
+2026-11-07T01:04:20.806003Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(14), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=11 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=12 proposer duties
+--> incremental fork=gloas stale_epochs=12 attestation_data
+--> incremental fork=gloas stale_epochs=12 attester duties
+--> incremental fork=gloas stale_epochs=12 ptc duties
+--> incremental fork=gloas stale_epochs=12 block production
+2026-11-07T01:04:39.937022Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:04:39.937055Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:04:39.937057Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+2026-11-07T01:04:39.937059Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(3) }))
+2026-11-07T01:04:39.937060Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(3) }))
+2026-11-07T01:04:39.937061Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(3) }))
+2026-11-07T01:04:39.937063Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(15), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=12 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=13 proposer duties
+--> incremental fork=gloas stale_epochs=13 attestation_data
+--> incremental fork=gloas stale_epochs=13 attester duties
+--> incremental fork=gloas stale_epochs=13 ptc duties
+--> incremental fork=gloas stale_epochs=13 block production
+2026-11-07T01:05:00.689407Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:05:00.689442Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:05:00.689444Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+2026-11-07T01:05:00.689446Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(3) }))
+2026-11-07T01:05:00.689448Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(3) }))
+2026-11-07T01:05:00.689449Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(3) }))
+2026-11-07T01:05:00.689451Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(16), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=13 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=14 proposer duties
+--> incremental fork=gloas stale_epochs=14 attestation_data
+--> incremental fork=gloas stale_epochs=14 attester duties
+--> incremental fork=gloas stale_epochs=14 ptc duties
+--> incremental fork=gloas stale_epochs=14 block production
+2026-11-07T01:05:23.209412Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:05:23.209447Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:05:23.209449Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+2026-11-07T01:05:23.209450Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(3) }))
+2026-11-07T01:05:23.209452Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(3) }))
+2026-11-07T01:05:23.209453Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(3) }))
+2026-11-07T01:05:23.209455Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(17), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=14 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=15 proposer duties
+--> incremental fork=gloas stale_epochs=15 attestation_data
+--> incremental fork=gloas stale_epochs=15 attester duties
+--> incremental fork=gloas stale_epochs=15 ptc duties
+--> incremental fork=gloas stale_epochs=15 block production
+2026-11-07T01:05:47.561574Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:05:47.561607Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:05:47.561609Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+2026-11-07T01:05:47.561611Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(3) }))
+2026-11-07T01:05:47.561612Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(3) }))
+2026-11-07T01:05:47.561614Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(3) }))
+2026-11-07T01:05:47.561615Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(18), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=15 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=16 proposer duties
+--> incremental fork=gloas stale_epochs=16 attestation_data
+--> incremental fork=gloas stale_epochs=16 attester duties
+--> incremental fork=gloas stale_epochs=16 ptc duties
+--> incremental fork=gloas stale_epochs=16 block production
+2026-11-07T01:06:12.962557Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:06:12.962592Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:06:12.962594Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+2026-11-07T01:06:12.962596Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(3) }))
+2026-11-07T01:06:12.962597Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(3) }))
+2026-11-07T01:06:12.962599Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(3) }))
+2026-11-07T01:06:12.962600Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(19), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=16 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=17 proposer duties
+--> incremental fork=gloas stale_epochs=17 attestation_data
+--> incremental fork=gloas stale_epochs=17 attester duties
+--> incremental fork=gloas stale_epochs=17 ptc duties
+--> incremental fork=gloas stale_epochs=17 block production
+2026-11-07T01:06:39.894758Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:06:39.894845Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:06:39.894848Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+2026-11-07T01:06:39.894852Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(3) }))
+2026-11-07T01:06:39.894854Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(3) }))
+2026-11-07T01:06:39.894856Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(3) }))
+2026-11-07T01:06:39.894857Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(20), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=17 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=18 proposer duties
+--> incremental fork=gloas stale_epochs=18 attestation_data
+--> incremental fork=gloas stale_epochs=18 attester duties
+--> incremental fork=gloas stale_epochs=18 ptc duties
+--> incremental fork=gloas stale_epochs=18 block production
+2026-11-07T01:07:08.320465Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:07:08.320666Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:07:08.320670Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+2026-11-07T01:07:08.320675Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(3) }))
+2026-11-07T01:07:08.320678Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(3) }))
+2026-11-07T01:07:08.320680Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(3) }))
+2026-11-07T01:07:08.320685Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(21), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=18 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=19 proposer duties
+--> incremental fork=gloas stale_epochs=19 attestation_data
+--> incremental fork=gloas stale_epochs=19 attester duties
+--> incremental fork=gloas stale_epochs=19 ptc duties
+--> incremental fork=gloas stale_epochs=19 block production
+2026-11-07T01:07:38.787247Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:07:38.787327Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:07:38.787330Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+2026-11-07T01:07:38.787332Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(3) }))
+2026-11-07T01:07:38.787333Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(3) }))
+2026-11-07T01:07:38.787335Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(3) }))
+2026-11-07T01:07:38.787338Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(22), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=19 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=20 proposer duties
+--> incremental fork=gloas stale_epochs=20 attestation_data
+--> incremental fork=gloas stale_epochs=20 attester duties
+--> incremental fork=gloas stale_epochs=20 ptc duties
+--> incremental fork=gloas stale_epochs=20 block production
+2026-11-07T01:08:10.373184Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:08:10.373344Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:08:10.373348Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+2026-11-07T01:08:10.373350Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(3) }))
+2026-11-07T01:08:10.373352Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(3) }))
+2026-11-07T01:08:10.373354Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(3) }))
+2026-11-07T01:08:10.373358Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(23), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=20 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=21 proposer duties
+--> incremental fork=gloas stale_epochs=21 attestation_data
+--> incremental fork=gloas stale_epochs=21 attester duties
+--> incremental fork=gloas stale_epochs=21 ptc duties
+--> incremental fork=gloas stale_epochs=21 block production
+2026-11-07T01:08:44.664406Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:08:44.664489Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:08:44.664492Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+2026-11-07T01:08:44.664496Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(3) }))
+2026-11-07T01:08:44.664505Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(3) }))
+2026-11-07T01:08:44.664507Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(3) }))
+2026-11-07T01:08:44.664509Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(24), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=21 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=22 proposer duties
+--> incremental fork=gloas stale_epochs=22 attestation_data
+--> incremental fork=gloas stale_epochs=22 attester duties
+--> incremental fork=gloas stale_epochs=22 ptc duties
+--> incremental fork=gloas stale_epochs=22 block production
+2026-11-07T01:09:20.234903Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:09:20.235005Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:09:20.235008Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+2026-11-07T01:09:20.235010Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(3) }))
+2026-11-07T01:09:20.235011Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(3) }))
+2026-11-07T01:09:20.235013Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(3) }))
+2026-11-07T01:09:20.235016Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(25), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=22 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=23 proposer duties
+--> incremental fork=gloas stale_epochs=23 attestation_data
+--> incremental fork=gloas stale_epochs=23 attester duties
+--> incremental fork=gloas stale_epochs=23 ptc duties
+--> incremental fork=gloas stale_epochs=23 block production
+2026-11-07T01:09:57.370633Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:09:57.370666Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:09:57.370668Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+2026-11-07T01:09:57.370669Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(3) }))
+2026-11-07T01:09:57.370671Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(3) }))
+2026-11-07T01:09:57.370672Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(3) }))
+2026-11-07T01:09:57.370674Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(26), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=23 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=24 proposer duties
+--> incremental fork=gloas stale_epochs=24 attestation_data
+--> incremental fork=gloas stale_epochs=24 attester duties
+--> incremental fork=gloas stale_epochs=24 ptc duties
+--> incremental fork=gloas stale_epochs=24 block production
+2026-11-07T01:10:35.703532Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:10:35.703566Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:10:35.703568Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+2026-11-07T01:10:35.703570Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(3) }))
+2026-11-07T01:10:35.703571Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(3) }))
+2026-11-07T01:10:35.703572Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(3) }))
+2026-11-07T01:10:35.703574Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(27), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=24 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=25 proposer duties
+--> incremental fork=gloas stale_epochs=25 attestation_data
+--> incremental fork=gloas stale_epochs=25 attester duties
+--> incremental fork=gloas stale_epochs=25 ptc duties
+--> incremental fork=gloas stale_epochs=25 block production
+2026-11-07T01:11:15.500393Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:11:15.500562Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:11:15.500565Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+2026-11-07T01:11:15.500567Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(3) }))
+2026-11-07T01:11:15.500568Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(3) }))
+2026-11-07T01:11:15.500569Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(3) }))
+2026-11-07T01:11:15.500575Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(28), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=25 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=26 proposer duties
+--> incremental fork=gloas stale_epochs=26 attestation_data
+--> incremental fork=gloas stale_epochs=26 attester duties
+--> incremental fork=gloas stale_epochs=26 ptc duties
+--> incremental fork=gloas stale_epochs=26 block production
+2026-11-07T01:11:57.147703Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:11:57.147836Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:11:57.147839Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+2026-11-07T01:11:57.147841Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(3) }))
+2026-11-07T01:11:57.147842Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(3) }))
+2026-11-07T01:11:57.147843Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(3) }))
+2026-11-07T01:11:57.147847Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(29), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=26 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=27 proposer duties
+--> incremental fork=gloas stale_epochs=27 attestation_data
+--> incremental fork=gloas stale_epochs=27 attester duties
+--> incremental fork=gloas stale_epochs=27 ptc duties
+--> incremental fork=gloas stale_epochs=27 block production
+2026-11-07T01:12:40.032869Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:12:40.032989Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:12:40.032993Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+2026-11-07T01:12:40.032995Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(3) }))
+2026-11-07T01:12:40.032996Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(3) }))
+2026-11-07T01:12:40.032998Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(3) }))
+2026-11-07T01:12:40.033001Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(30), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=27 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=28 proposer duties
+--> incremental fork=gloas stale_epochs=28 attestation_data
+--> incremental fork=gloas stale_epochs=28 attester duties
+--> incremental fork=gloas stale_epochs=28 ptc duties
+--> incremental fork=gloas stale_epochs=28 block production
+2026-11-07T01:13:25.227095Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:13:25.227167Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:13:25.227170Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+2026-11-07T01:13:25.227174Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(3) }))
+2026-11-07T01:13:25.227176Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(3) }))
+2026-11-07T01:13:25.227177Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(3) }))
+2026-11-07T01:13:25.227179Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(31), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=28 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=29 proposer duties
+--> incremental fork=gloas stale_epochs=29 attestation_data
+--> incremental fork=gloas stale_epochs=29 attester duties
+--> incremental fork=gloas stale_epochs=29 ptc duties
+--> incremental fork=gloas stale_epochs=29 block production
+2026-11-07T01:14:11.959442Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:14:11.959559Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:14:11.959563Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+2026-11-07T01:14:11.959565Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(3) }))
+2026-11-07T01:14:11.959566Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(3) }))
+2026-11-07T01:14:11.959568Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(3) }))
+2026-11-07T01:14:11.959572Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(32), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=29 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=30 proposer duties
+--> incremental fork=gloas stale_epochs=30 attestation_data
+--> incremental fork=gloas stale_epochs=30 attester duties
+--> incremental fork=gloas stale_epochs=30 ptc duties
+--> incremental fork=gloas stale_epochs=30 block production
+2026-11-07T01:15:00.114172Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:15:00.114285Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:15:00.114288Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+2026-11-07T01:15:00.114290Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(3) }))
+2026-11-07T01:15:00.114292Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(3) }))
+2026-11-07T01:15:00.114293Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(3) }))
+2026-11-07T01:15:00.114296Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(33), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=30 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=31 proposer duties
+--> incremental fork=gloas stale_epochs=31 attestation_data
+--> incremental fork=gloas stale_epochs=31 attester duties
+--> incremental fork=gloas stale_epochs=31 ptc duties
+--> incremental fork=gloas stale_epochs=31 block production
+2026-11-07T01:15:49.496618Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:15:49.496734Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:15:49.496737Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+2026-11-07T01:15:49.496739Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(3) }))
+2026-11-07T01:15:49.496740Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(3) }))
+2026-11-07T01:15:49.496742Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(3) }))
+2026-11-07T01:15:49.496746Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(34), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=31 states/{slot}/validators
+--> incremental fork=gloas stale_epochs=32 proposer duties
+--> incremental fork=gloas stale_epochs=32 attestation_data
+--> incremental fork=gloas stale_epochs=32 attester duties
+--> incremental fork=gloas stale_epochs=32 ptc duties
+--> incremental fork=gloas stale_epochs=32 block production
+2026-11-07T01:16:42.694826Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:16:42.694958Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:16:42.694962Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+2026-11-07T01:16:42.694964Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(3) }))
+2026-11-07T01:16:42.694965Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(3) }))
+2026-11-07T01:16:42.694966Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(3) }))
+2026-11-07T01:16:42.694970Z ERROR beacon_chain::block_production::gloas: Attestation did not transfer to op pool reason=BeaconStateError(RelativeEpochError(EpochTooLow { base: Epoch(35), other: Epoch(2) }))
+--> incremental fork=gloas stale_epochs=32 states/{slot}/validators
+
+### stale-head epoch-by-epoch incremental variant=`base-25b9b7541` validators=32768
+| fork | endpoint | stale_epochs | first_ms | first_pe |
+|---|---|---:|---:|---:|
+| fulu | proposer_duties(next_epoch) | 1 | 46.41 | 1 |
+| fulu | attestation_data(current_slot) | 1 | 41.65 | 1 |
+| fulu | attester_duties(current_epoch) | 1 | 80.13 | 0 |
+| fulu | block_production(v3) | 1 | 322.56 | 1 |
+| fulu | states/{slot}/validators(past_head) | 1 | 92.81 | 0 |
+| fulu | proposer_duties(next_epoch) | 2 | 83.03 | 2 |
+| fulu | attestation_data(current_slot) | 2 | 79.19 | 2 |
+| fulu | attester_duties(current_epoch) | 2 | 123.87 | 1 |
+| fulu | block_production(v3) | 2 | 367.14 | 2 |
+| fulu | states/{slot}/validators(past_head) | 2 | 81.29 | 0 |
+| fulu | proposer_duties(next_epoch) | 3 | 121.95 | 3 |
+| fulu | attestation_data(current_slot) | 3 | 117.56 | 3 |
+| fulu | attester_duties(current_epoch) | 3 | 164.71 | 2 |
+| fulu | block_production(v3) | 3 | 416.75 | 3 |
+| fulu | states/{slot}/validators(past_head) | 3 | 82.89 | 0 |
+| fulu | proposer_duties(next_epoch) | 4 | 151.45 | 4 |
+| fulu | attestation_data(current_slot) | 4 | 149.96 | 4 |
+| fulu | attester_duties(current_epoch) | 4 | 185.22 | 3 |
+| fulu | block_production(v3) | 4 | 464.41 | 4 |
+| fulu | states/{slot}/validators(past_head) | 4 | 74.82 | 0 |
+| fulu | proposer_duties(next_epoch) | 5 | 183.88 | 5 |
+| fulu | attestation_data(current_slot) | 5 | 183.05 | 5 |
+| fulu | attester_duties(current_epoch) | 5 | 222.75 | 4 |
+| fulu | block_production(v3) | 5 | 520.88 | 5 |
+| fulu | states/{slot}/validators(past_head) | 5 | 76.90 | 0 |
+| fulu | proposer_duties(next_epoch) | 6 | 225.08 | 6 |
+| fulu | attestation_data(current_slot) | 6 | 223.78 | 6 |
+| fulu | attester_duties(current_epoch) | 6 | 262.23 | 5 |
+| fulu | block_production(v3) | 6 | 590.31 | 6 |
+| fulu | states/{slot}/validators(past_head) | 6 | 79.24 | 0 |
+| fulu | proposer_duties(next_epoch) | 7 | 272.38 | 7 |
+| fulu | attestation_data(current_slot) | 7 | 268.52 | 7 |
+| fulu | attester_duties(current_epoch) | 7 | 294.79 | 6 |
+| fulu | block_production(v3) | 7 | 639.32 | 7 |
+| fulu | states/{slot}/validators(past_head) | 7 | 75.40 | 0 |
+| fulu | proposer_duties(next_epoch) | 8 | 361.75 | 8 |
+| fulu | attestation_data(current_slot) | 8 | 317.50 | 8 |
+| fulu | attester_duties(current_epoch) | 8 | 351.41 | 7 |
+| fulu | block_production(v3) | 8 | 704.38 | 8 |
+| fulu | states/{slot}/validators(past_head) | 8 | 79.94 | 0 |
+| fulu | proposer_duties(next_epoch) | 9 | 345.48 | 9 |
+| fulu | attestation_data(current_slot) | 9 | 340.61 | 9 |
+| fulu | attester_duties(current_epoch) | 9 | 409.22 | 8 |
+| fulu | block_production(v3) | 9 | 760.95 | 9 |
+| fulu | states/{slot}/validators(past_head) | 9 | 78.23 | 0 |
+| fulu | proposer_duties(next_epoch) | 10 | 376.72 | 10 |
+| fulu | attestation_data(current_slot) | 10 | 385.14 | 10 |
+| fulu | attester_duties(current_epoch) | 10 | 452.57 | 9 |
+| fulu | block_production(v3) | 10 | 814.23 | 10 |
+| fulu | states/{slot}/validators(past_head) | 10 | 77.68 | 0 |
+| fulu | proposer_duties(next_epoch) | 11 | 424.43 | 11 |
+| fulu | attestation_data(current_slot) | 11 | 414.14 | 11 |
+| fulu | attester_duties(current_epoch) | 11 | 465.30 | 10 |
+| fulu | block_production(v3) | 11 | 845.08 | 11 |
+| fulu | states/{slot}/validators(past_head) | 11 | 84.81 | 0 |
+| fulu | proposer_duties(next_epoch) | 12 | 452.49 | 12 |
+| fulu | attestation_data(current_slot) | 12 | 460.99 | 12 |
+| fulu | attester_duties(current_epoch) | 12 | 482.56 | 11 |
+| fulu | block_production(v3) | 12 | 936.78 | 12 |
+| fulu | states/{slot}/validators(past_head) | 12 | 81.17 | 0 |
+| fulu | proposer_duties(next_epoch) | 13 | 517.75 | 13 |
+| fulu | attestation_data(current_slot) | 13 | 493.65 | 13 |
+| fulu | attester_duties(current_epoch) | 13 | 530.93 | 12 |
+| fulu | block_production(v3) | 13 | 970.55 | 13 |
+| fulu | states/{slot}/validators(past_head) | 13 | 82.14 | 0 |
+| fulu | proposer_duties(next_epoch) | 14 | 561.99 | 14 |
+| fulu | attestation_data(current_slot) | 14 | 543.74 | 14 |
+| fulu | attester_duties(current_epoch) | 14 | 617.44 | 13 |
+| fulu | block_production(v3) | 14 | 1061.16 | 14 |
+| fulu | states/{slot}/validators(past_head) | 14 | 84.96 | 0 |
+| fulu | proposer_duties(next_epoch) | 15 | 733.91 | 15 |
+| fulu | attestation_data(current_slot) | 15 | 607.93 | 15 |
+| fulu | attester_duties(current_epoch) | 15 | 625.08 | 14 |
+| fulu | block_production(v3) | 15 | 1110.50 | 15 |
+| fulu | states/{slot}/validators(past_head) | 15 | 78.09 | 0 |
+| fulu | proposer_duties(next_epoch) | 16 | 654.67 | 16 |
+| fulu | attestation_data(current_slot) | 16 | 608.67 | 16 |
+| fulu | attester_duties(current_epoch) | 16 | 652.97 | 15 |
+| fulu | block_production(v3) | 16 | 1139.80 | 16 |
+| fulu | states/{slot}/validators(past_head) | 16 | 79.04 | 0 |
+| fulu | proposer_duties(next_epoch) | 17 | 669.40 | 17 |
+| fulu | attestation_data(current_slot) | 17 | 655.42 | 17 |
+| fulu | attester_duties(current_epoch) | 17 | 690.45 | 16 |
+| fulu | block_production(v3) | 17 | 1173.24 | 17 |
+| fulu | states/{slot}/validators(past_head) | 17 | 78.24 | 0 |
+| fulu | proposer_duties(next_epoch) | 18 | 682.82 | 18 |
+| fulu | attestation_data(current_slot) | 18 | 722.23 | 18 |
+| fulu | attester_duties(current_epoch) | 18 | 722.78 | 17 |
+| fulu | block_production(v3) | 18 | 1205.91 | 18 |
+| fulu | states/{slot}/validators(past_head) | 18 | 85.87 | 0 |
+| fulu | proposer_duties(next_epoch) | 19 | 720.96 | 19 |
+| fulu | attestation_data(current_slot) | 19 | 727.47 | 19 |
+| fulu | attester_duties(current_epoch) | 19 | 764.86 | 18 |
+| fulu | block_production(v3) | 19 | 1258.02 | 19 |
+| fulu | states/{slot}/validators(past_head) | 19 | 103.09 | 0 |
+| fulu | proposer_duties(next_epoch) | 20 | 779.20 | 20 |
+| fulu | attestation_data(current_slot) | 20 | 760.24 | 20 |
+| fulu | attester_duties(current_epoch) | 20 | 795.79 | 19 |
+| fulu | block_production(v3) | 20 | 1305.73 | 20 |
+| fulu | states/{slot}/validators(past_head) | 20 | 87.63 | 0 |
+| fulu | proposer_duties(next_epoch) | 21 | 796.94 | 21 |
+| fulu | attestation_data(current_slot) | 21 | 783.49 | 21 |
+| fulu | attester_duties(current_epoch) | 21 | 826.11 | 20 |
+| fulu | block_production(v3) | 21 | 1337.30 | 21 |
+| fulu | states/{slot}/validators(past_head) | 21 | 74.10 | 0 |
+| fulu | proposer_duties(next_epoch) | 22 | 843.19 | 22 |
+| fulu | attestation_data(current_slot) | 22 | 810.52 | 22 |
+| fulu | attester_duties(current_epoch) | 22 | 882.06 | 21 |
+| fulu | block_production(v3) | 22 | 1381.57 | 22 |
+| fulu | states/{slot}/validators(past_head) | 22 | 76.89 | 0 |
+| fulu | proposer_duties(next_epoch) | 23 | 861.15 | 23 |
+| fulu | attestation_data(current_slot) | 23 | 838.47 | 23 |
+| fulu | attester_duties(current_epoch) | 23 | 885.94 | 22 |
+| fulu | block_production(v3) | 23 | 1456.32 | 23 |
+| fulu | states/{slot}/validators(past_head) | 23 | 76.11 | 0 |
+| fulu | proposer_duties(next_epoch) | 24 | 934.16 | 24 |
+| fulu | attestation_data(current_slot) | 24 | 895.03 | 24 |
+| fulu | attester_duties(current_epoch) | 24 | 944.52 | 23 |
+| fulu | block_production(v3) | 24 | 1566.14 | 24 |
+| fulu | states/{slot}/validators(past_head) | 24 | 81.23 | 0 |
+| fulu | proposer_duties(next_epoch) | 25 | 975.58 | 25 |
+| fulu | attestation_data(current_slot) | 25 | 946.95 | 25 |
+| fulu | attester_duties(current_epoch) | 25 | 957.31 | 24 |
+| fulu | block_production(v3) | 25 | 1529.93 | 25 |
+| fulu | states/{slot}/validators(past_head) | 25 | 73.95 | 0 |
+| fulu | proposer_duties(next_epoch) | 26 | 978.16 | 26 |
+| fulu | attestation_data(current_slot) | 26 | 947.34 | 26 |
+| fulu | attester_duties(current_epoch) | 26 | 1028.20 | 25 |
+| fulu | block_production(v3) | 26 | 1594.16 | 26 |
+| fulu | states/{slot}/validators(past_head) | 26 | 76.62 | 0 |
+| fulu | proposer_duties(next_epoch) | 27 | 1000.76 | 27 |
+| fulu | attestation_data(current_slot) | 27 | 996.34 | 27 |
+| fulu | attester_duties(current_epoch) | 27 | 1039.59 | 26 |
+| fulu | block_production(v3) | 27 | 1652.67 | 27 |
+| fulu | states/{slot}/validators(past_head) | 27 | 80.43 | 0 |
+| fulu | proposer_duties(next_epoch) | 28 | 1043.74 | 28 |
+| fulu | attestation_data(current_slot) | 28 | 1036.03 | 28 |
+| fulu | attester_duties(current_epoch) | 28 | 1074.02 | 27 |
+| fulu | block_production(v3) | 28 | 1718.93 | 28 |
+| fulu | states/{slot}/validators(past_head) | 28 | 88.02 | 0 |
+| fulu | proposer_duties(next_epoch) | 29 | 1119.39 | 29 |
+| fulu | attestation_data(current_slot) | 29 | 1102.76 | 29 |
+| fulu | attester_duties(current_epoch) | 29 | 1131.83 | 28 |
+| fulu | block_production(v3) | 29 | 1798.07 | 29 |
+| fulu | states/{slot}/validators(past_head) | 29 | 91.19 | 0 |
+| fulu | proposer_duties(next_epoch) | 30 | 1140.19 | 30 |
+| fulu | attestation_data(current_slot) | 30 | 1134.40 | 30 |
+| fulu | attester_duties(current_epoch) | 30 | 1179.77 | 29 |
+| fulu | block_production(v3) | 30 | 1904.24 | 30 |
+| fulu | states/{slot}/validators(past_head) | 30 | 93.10 | 0 |
+| fulu | proposer_duties(next_epoch) | 31 | 1195.23 | 31 |
+| fulu | attestation_data(current_slot) | 31 | 1166.43 | 31 |
+| fulu | attester_duties(current_epoch) | 31 | 1222.16 | 30 |
+| fulu | block_production(v3) | 31 | 1884.61 | 31 |
+| fulu | states/{slot}/validators(past_head) | 31 | 84.99 | 0 |
+| fulu | proposer_duties(next_epoch) | 32 | 1201.25 | 32 |
+| fulu | attestation_data(current_slot) | 32 | 1194.14 | 32 |
+| fulu | attester_duties(current_epoch) | 32 | 1316.36 | 31 |
+| fulu | block_production(v3) | 32 | 1990.19 | 32 |
+| fulu | states/{slot}/validators(past_head) | 32 | 87.03 | 0 |
+| gloas | proposer_duties(next_epoch) | 1 | 302.86 | 1 |
+| gloas | attestation_data(current_slot) | 1 | 299.97 | 1 |
+| gloas | attester_duties(current_epoch) | 1 | 86.11 | 0 |
+| gloas | ptc_duties(current_epoch) | 1 | 167.34 | 0 |
+| gloas | block_production(v4) | 1 | 579.95 | 1 |
+| gloas | states/{slot}/validators(past_head) | 1 | 92.11 | 0 |
+| gloas | proposer_duties(next_epoch) | 2 | 610.38 | 2 |
+| gloas | attestation_data(current_slot) | 2 | 638.14 | 2 |
+| gloas | attester_duties(current_epoch) | 2 | 372.79 | 1 |
+| gloas | ptc_duties(current_epoch) | 2 | 466.07 | 1 |
+| gloas | block_production(v4) | 2 | 889.71 | 2 |
+| gloas | states/{slot}/validators(past_head) | 2 | 82.67 | 0 |
+| gloas | proposer_duties(next_epoch) | 3 | 909.77 | 3 |
+| gloas | attestation_data(current_slot) | 3 | 911.35 | 3 |
+| gloas | attester_duties(current_epoch) | 3 | 680.57 | 2 |
+| gloas | ptc_duties(current_epoch) | 3 | 787.62 | 2 |
+| gloas | block_production(v4) | 3 | 1238.12 | 3 |
+| gloas | states/{slot}/validators(past_head) | 3 | 79.34 | 0 |
+| gloas | proposer_duties(next_epoch) | 4 | 1264.84 | 4 |
+| gloas | attestation_data(current_slot) | 4 | 1235.04 | 4 |
+| gloas | attester_duties(current_epoch) | 4 | 1039.84 | 3 |
+| gloas | ptc_duties(current_epoch) | 4 | 1089.62 | 3 |
+| gloas | block_production(v4) | 4 | 1589.43 | 4 |
+| gloas | states/{slot}/validators(past_head) | 4 | 79.04 | 0 |
+| gloas | proposer_duties(next_epoch) | 5 | 1554.03 | 5 |
+| gloas | attestation_data(current_slot) | 5 | 1554.46 | 5 |
+| gloas | attester_duties(current_epoch) | 5 | 1305.70 | 4 |
+| gloas | ptc_duties(current_epoch) | 5 | 1386.64 | 4 |
+| gloas | block_production(v4) | 5 | 1880.15 | 5 |
+| gloas | states/{slot}/validators(past_head) | 5 | 81.42 | 0 |
+| gloas | proposer_duties(next_epoch) | 6 | 1878.19 | 6 |
+| gloas | attestation_data(current_slot) | 6 | 1892.42 | 6 |
+| gloas | attester_duties(current_epoch) | 6 | 1610.82 | 5 |
+| gloas | ptc_duties(current_epoch) | 6 | 1728.56 | 5 |
+| gloas | block_production(v4) | 6 | 2199.35 | 6 |
+| gloas | states/{slot}/validators(past_head) | 6 | 91.06 | 0 |
+| gloas | proposer_duties(next_epoch) | 7 | 2175.25 | 7 |
+| gloas | attestation_data(current_slot) | 7 | 2193.44 | 7 |
+| gloas | attester_duties(current_epoch) | 7 | 1976.00 | 6 |
+| gloas | ptc_duties(current_epoch) | 7 | 2065.91 | 6 |
+| gloas | block_production(v4) | 7 | 2516.29 | 7 |
+| gloas | states/{slot}/validators(past_head) | 7 | 79.32 | 0 |
+| gloas | proposer_duties(next_epoch) | 8 | 2533.44 | 8 |
+| gloas | attestation_data(current_slot) | 8 | 2504.78 | 8 |
+| gloas | attester_duties(current_epoch) | 8 | 2262.34 | 7 |
+| gloas | ptc_duties(current_epoch) | 8 | 2369.02 | 7 |
+| gloas | block_production(v4) | 8 | 2857.26 | 8 |
+| gloas | states/{slot}/validators(past_head) | 8 | 114.78 | 0 |
+| gloas | proposer_duties(next_epoch) | 9 | 3165.73 | 9 |
+| gloas | attestation_data(current_slot) | 9 | 2831.03 | 9 |
+| gloas | attester_duties(current_epoch) | 9 | 2910.09 | 8 |
+| gloas | ptc_duties(current_epoch) | 9 | 3030.55 | 8 |
+| gloas | block_production(v4) | 9 | 3466.51 | 9 |
+| gloas | states/{slot}/validators(past_head) | 9 | 76.92 | 0 |
+| gloas | proposer_duties(next_epoch) | 10 | 3240.96 | 10 |
+| gloas | attestation_data(current_slot) | 10 | 3183.14 | 10 |
+| gloas | attester_duties(current_epoch) | 10 | 2954.70 | 9 |
+| gloas | ptc_duties(current_epoch) | 10 | 3019.97 | 9 |
+| gloas | block_production(v4) | 10 | 3801.42 | 10 |
+| gloas | states/{slot}/validators(past_head) | 10 | 84.99 | 0 |
+| gloas | proposer_duties(next_epoch) | 11 | 3589.55 | 11 |
+| gloas | attestation_data(current_slot) | 11 | 3618.68 | 11 |
+| gloas | attester_duties(current_epoch) | 11 | 3299.98 | 10 |
+| gloas | ptc_duties(current_epoch) | 11 | 3326.74 | 10 |
+| gloas | block_production(v4) | 11 | 3843.66 | 11 |
+| gloas | states/{slot}/validators(past_head) | 11 | 85.32 | 0 |
+| gloas | proposer_duties(next_epoch) | 12 | 3791.36 | 12 |
+| gloas | attestation_data(current_slot) | 12 | 3874.62 | 12 |
+| gloas | attester_duties(current_epoch) | 12 | 3575.30 | 11 |
+| gloas | ptc_duties(current_epoch) | 12 | 3652.26 | 11 |
+| gloas | block_production(v4) | 12 | 4145.23 | 12 |
+| gloas | states/{slot}/validators(past_head) | 12 | 75.82 | 0 |
+| gloas | proposer_duties(next_epoch) | 13 | 4131.97 | 13 |
+| gloas | attestation_data(current_slot) | 13 | 4083.82 | 13 |
+| gloas | attester_duties(current_epoch) | 13 | 3865.39 | 12 |
+| gloas | ptc_duties(current_epoch) | 13 | 4105.60 | 12 |
+| gloas | block_production(v4) | 13 | 4490.24 | 13 |
+| gloas | states/{slot}/validators(past_head) | 13 | 76.67 | 0 |
+| gloas | proposer_duties(next_epoch) | 14 | 4414.39 | 14 |
+| gloas | attestation_data(current_slot) | 14 | 4383.08 | 14 |
+| gloas | attester_duties(current_epoch) | 14 | 4366.25 | 13 |
+| gloas | ptc_duties(current_epoch) | 14 | 4393.01 | 13 |
+| gloas | block_production(v4) | 14 | 4879.40 | 14 |
+| gloas | states/{slot}/validators(past_head) | 14 | 90.18 | 0 |
+| gloas | proposer_duties(next_epoch) | 15 | 4692.16 | 15 |
+| gloas | attestation_data(current_slot) | 15 | 4837.84 | 15 |
+| gloas | attester_duties(current_epoch) | 15 | 4569.67 | 14 |
+| gloas | ptc_duties(current_epoch) | 15 | 4883.69 | 14 |
+| gloas | block_production(v4) | 15 | 5278.90 | 15 |
+| gloas | states/{slot}/validators(past_head) | 15 | 82.06 | 0 |
+| gloas | proposer_duties(next_epoch) | 16 | 5068.31 | 16 |
+| gloas | attestation_data(current_slot) | 16 | 5020.27 | 16 |
+| gloas | attester_duties(current_epoch) | 16 | 4803.03 | 15 |
+| gloas | ptc_duties(current_epoch) | 16 | 4989.60 | 15 |
+| gloas | block_production(v4) | 16 | 5431.63 | 16 |
+| gloas | states/{slot}/validators(past_head) | 16 | 80.05 | 0 |
+| gloas | proposer_duties(next_epoch) | 17 | 5364.04 | 17 |
+| gloas | attestation_data(current_slot) | 17 | 5388.03 | 17 |
+| gloas | attester_duties(current_epoch) | 17 | 5172.92 | 16 |
+| gloas | ptc_duties(current_epoch) | 17 | 5178.35 | 16 |
+| gloas | block_production(v4) | 17 | 5744.65 | 17 |
+| gloas | states/{slot}/validators(past_head) | 17 | 85.93 | 0 |
+| gloas | proposer_duties(next_epoch) | 18 | 5710.30 | 18 |
+| gloas | attestation_data(current_slot) | 18 | 5630.56 | 18 |
+| gloas | attester_duties(current_epoch) | 18 | 5326.44 | 17 |
+| gloas | ptc_duties(current_epoch) | 18 | 5461.72 | 17 |
+| gloas | block_production(v4) | 18 | 6229.30 | 18 |
+| gloas | states/{slot}/validators(past_head) | 18 | 158.61 | 0 |
+| gloas | proposer_duties(next_epoch) | 19 | 6158.72 | 19 |
+| gloas | attestation_data(current_slot) | 19 | 6007.84 | 19 |
+| gloas | attester_duties(current_epoch) | 19 | 5811.95 | 18 |
+| gloas | ptc_duties(current_epoch) | 19 | 5796.29 | 18 |
+| gloas | block_production(v4) | 19 | 6510.22 | 19 |
+| gloas | states/{slot}/validators(past_head) | 19 | 93.51 | 0 |
+| gloas | proposer_duties(next_epoch) | 20 | 6277.72 | 20 |
+| gloas | attestation_data(current_slot) | 20 | 6274.24 | 20 |
+| gloas | attester_duties(current_epoch) | 20 | 6009.41 | 19 |
+| gloas | ptc_duties(current_epoch) | 20 | 6147.34 | 19 |
+| gloas | block_production(v4) | 20 | 6776.70 | 20 |
+| gloas | states/{slot}/validators(past_head) | 20 | 95.86 | 0 |
+| gloas | proposer_duties(next_epoch) | 21 | 6654.33 | 21 |
+| gloas | attestation_data(current_slot) | 21 | 6752.52 | 21 |
+| gloas | attester_duties(current_epoch) | 21 | 6577.28 | 20 |
+| gloas | ptc_duties(current_epoch) | 21 | 6940.29 | 20 |
+| gloas | block_production(v4) | 21 | 7258.01 | 21 |
+| gloas | states/{slot}/validators(past_head) | 21 | 82.91 | 0 |
+| gloas | proposer_duties(next_epoch) | 22 | 6963.90 | 22 |
+| gloas | attestation_data(current_slot) | 22 | 7006.60 | 22 |
+| gloas | attester_duties(current_epoch) | 22 | 6730.10 | 21 |
+| gloas | ptc_duties(current_epoch) | 22 | 6806.85 | 21 |
+| gloas | block_production(v4) | 22 | 7977.90 | 22 |
+| gloas | states/{slot}/validators(past_head) | 22 | 115.26 | 0 |
+| gloas | proposer_duties(next_epoch) | 23 | 7474.99 | 23 |
+| gloas | attestation_data(current_slot) | 23 | 7256.77 | 23 |
+| gloas | attester_duties(current_epoch) | 23 | 7117.45 | 22 |
+| gloas | ptc_duties(current_epoch) | 23 | 7476.11 | 22 |
+| gloas | block_production(v4) | 23 | 7688.26 | 23 |
+| gloas | states/{slot}/validators(past_head) | 23 | 77.29 | 0 |
+| gloas | proposer_duties(next_epoch) | 24 | 7731.93 | 24 |
+| gloas | attestation_data(current_slot) | 24 | 7859.17 | 24 |
+| gloas | attester_duties(current_epoch) | 24 | 7218.02 | 23 |
+| gloas | ptc_duties(current_epoch) | 24 | 7375.55 | 23 |
+| gloas | block_production(v4) | 24 | 8067.91 | 24 |
+| gloas | states/{slot}/validators(past_head) | 24 | 76.90 | 0 |
+| gloas | proposer_duties(next_epoch) | 25 | 7860.28 | 25 |
+| gloas | attestation_data(current_slot) | 25 | 7894.88 | 25 |
+| gloas | attester_duties(current_epoch) | 25 | 7657.65 | 24 |
+| gloas | ptc_duties(current_epoch) | 25 | 7824.59 | 24 |
+| gloas | block_production(v4) | 25 | 8487.34 | 25 |
+| gloas | states/{slot}/validators(past_head) | 25 | 114.26 | 0 |
+| gloas | proposer_duties(next_epoch) | 26 | 8334.42 | 26 |
+| gloas | attestation_data(current_slot) | 26 | 8257.63 | 26 |
+| gloas | attester_duties(current_epoch) | 26 | 8137.02 | 25 |
+| gloas | ptc_duties(current_epoch) | 26 | 8115.15 | 25 |
+| gloas | block_production(v4) | 26 | 8676.05 | 26 |
+| gloas | states/{slot}/validators(past_head) | 26 | 98.61 | 0 |
+| gloas | proposer_duties(next_epoch) | 27 | 8545.89 | 27 |
+| gloas | attestation_data(current_slot) | 27 | 8500.98 | 27 |
+| gloas | attester_duties(current_epoch) | 27 | 8397.26 | 26 |
+| gloas | ptc_duties(current_epoch) | 27 | 8405.17 | 26 |
+| gloas | block_production(v4) | 27 | 8931.10 | 27 |
+| gloas | states/{slot}/validators(past_head) | 27 | 95.33 | 0 |
+| gloas | proposer_duties(next_epoch) | 28 | 8830.08 | 28 |
+| gloas | attestation_data(current_slot) | 28 | 8985.61 | 28 |
+| gloas | attester_duties(current_epoch) | 28 | 8826.92 | 27 |
+| gloas | ptc_duties(current_epoch) | 28 | 8697.24 | 27 |
+| gloas | block_production(v4) | 28 | 9749.58 | 28 |
+| gloas | states/{slot}/validators(past_head) | 28 | 90.53 | 0 |
+| gloas | proposer_duties(next_epoch) | 29 | 9561.74 | 29 |
+| gloas | attestation_data(current_slot) | 29 | 9255.88 | 29 |
+| gloas | attester_duties(current_epoch) | 29 | 9109.55 | 28 |
+| gloas | ptc_duties(current_epoch) | 29 | 9074.70 | 28 |
+| gloas | block_production(v4) | 29 | 9634.23 | 29 |
+| gloas | states/{slot}/validators(past_head) | 29 | 98.50 | 0 |
+| gloas | proposer_duties(next_epoch) | 30 | 9592.28 | 30 |
+| gloas | attestation_data(current_slot) | 30 | 9719.08 | 30 |
+| gloas | attester_duties(current_epoch) | 30 | 9259.19 | 29 |
+| gloas | ptc_duties(current_epoch) | 30 | 9404.70 | 29 |
+| gloas | block_production(v4) | 30 | 10075.28 | 30 |
+| gloas | states/{slot}/validators(past_head) | 30 | 96.70 | 0 |
+| gloas | proposer_duties(next_epoch) | 31 | 9884.41 | 31 |
+| gloas | attestation_data(current_slot) | 31 | 9745.78 | 31 |
+| gloas | attester_duties(current_epoch) | 31 | 9640.67 | 30 |
+| gloas | ptc_duties(current_epoch) | 31 | 9551.95 | 30 |
+| gloas | block_production(v4) | 31 | 10454.30 | 31 |
+| gloas | states/{slot}/validators(past_head) | 31 | 90.35 | 0 |
+| gloas | proposer_duties(next_epoch) | 32 | 10481.62 | 32 |
+| gloas | attestation_data(current_slot) | 32 | 10809.28 | 32 |
+| gloas | attester_duties(current_epoch) | 32 | 10410.49 | 31 |
+| gloas | ptc_duties(current_epoch) | 32 | 10072.57 | 31 |
+| gloas | block_production(v4) | 32 | 11328.90 | 32 |
+| gloas | states/{slot}/validators(past_head) | 32 | 102.25 | 0 |
+
+test stale_head_benchmark::stale_head_incremental_epoch_benchmark ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 211 filtered out; finished in 1025.63s
+
+INCR_EXIT=0
+ALL_BASE_BENCH_DONE
